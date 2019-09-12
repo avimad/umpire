@@ -1,4 +1,4 @@
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
  :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -204,6 +204,7 @@
   
   table {
     border-collapse: collapse;
+    width: 100%;
   }
   
   caption {
@@ -546,8 +547,8 @@
   
   .container {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 10px;
+    padding-left: 10px;
     margin-right: auto;
     margin-left: auto;
   }
@@ -6918,7 +6919,7 @@
   }
   
   .bg-secondary {
-    background-color:#479ef5c9 !important;
+    background-color:#368de5e0 !important;
   } 
   
   a.bg-secondary:hover, a.bg-secondary:focus,
@@ -8290,7 +8291,7 @@
   }
   
   .fixed-top {
-    position: fixed;
+    position: sticky;
     top: 0;
     right: 0;
     left: 0;
@@ -10865,5 +10866,9 @@
   
   .copyright {
     background-color: #1a252f;
+  }
+
+  .content-wrapper{
+    margin-top:50px;
   }
   
