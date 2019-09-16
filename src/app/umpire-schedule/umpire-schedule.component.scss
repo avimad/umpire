@@ -1,0 +1,28 @@
+mat-footer-row, mat-row{
+    min-height: 25px !important;
+}
+mat-header-row{
+    min-height: 25px !important;
+}
+mat-header-cell{
+    color: black;
+    font-size: 12px;
+    display:flex;
+   justify-content:center;
+}
+mat-cell{
+    font-size: 12px;
+    display:flex;
+   justify-content:center;
+}
+mat-header-row{
+    background-color: rgb(208,206,206);
+}
+.red-cell {
+    background-color: red
+}
+.schedulediv{
+    background-color: green;
+    margin-bottom: 1em;
+    
+}

@@ -1,1 +1,93 @@
-<p>umpire-schedule works!</p>
+<div class="content-wrapper example-container mat-elevation-z8">
+  <form [formGroup]="form">
+    <div *ngFor="let item of dataSource" class="schedulediv">
+
+      Date : {{item.Date}}
+      <mat-table #table [dataSource]="dataSource" formArrayName="test">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+        <!-- Name Column -->
+        <ng-container matColumnDef="Time">
+          <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.time}} </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="LocationDropBox1">
+          <mat-header-cell *matHeaderCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-select formControlName='location1'>
+              <mat-option [value]="1" *ngFor="let location of locations">
+                {{ location.name }}
+              </mat-option>
+            </mat-select>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+            <mat-select formControlName='umpire1'>
+              <mat-option value="umpire.Id" *ngFor="let umpire of umpires">
+                {{umpire.name}}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="LocationDropBox2">
+          <mat-header-cell *matHeaderCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-select formControlName='location2'>
+              <mat-option [value]="2" *ngFor="let location of locations">
+                {{ location.name }}
+              </mat-option>
+            </mat-select>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+            <mat-select formControlName='umpire2'>
+              <mat-option value="umpire.Id" *ngFor="let umpire of umpires">
+                {{umpire.name}}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="LocationDropBox3">
+          <mat-header-cell *matHeaderCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-select formControlName='location3'>
+              <mat-option [value]="3" *ngFor="let location of locations">
+                {{ location.name }}
+              </mat-option>
+            </mat-select>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+            <mat-select formControlName='umpire3'>
+              <mat-option value="umpire.Id" *ngFor="let umpire of umpires">
+                {{umpire.name}}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="LocationDropBox4">
+          <mat-header-cell *matHeaderCellDef="let element; let i = index;" [formGroupName]="i">
+            <mat-select formControlName='location4'>
+              <mat-option [value]="4" *ngFor="let location of locations">
+                {{ location.name }}
+              </mat-option>
+            </mat-select>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i=index;" [formGroupName]="i">
+            <mat-select formControlName='umpire4'>
+              <mat-option *ngFor="let umpire of umpires">
+                {{umpire.name}}
+              </mat-option>
+            </mat-select>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </form>
+</div>

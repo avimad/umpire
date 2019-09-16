@@ -10,8 +10,10 @@ import { UmpireInfoComponent } from './umpire-info/umpire-info.component';
 import { LandingComponent } from './landing/landing.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
+import { MatTableModule, MatSelectModule, MatInputModule } from '@angular/material';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -26,8 +28,10 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     MatTableModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
