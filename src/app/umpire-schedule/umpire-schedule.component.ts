@@ -15,16 +15,22 @@ export class UmpireScheduleComponent implements OnInit {
   locations = LOCATIONS;
   umpires = UMPIRES;
 
-  form: FormGroup;
+  scheduleForm: FormGroup;
   constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({
+    this.scheduleForm = this.fb.group({
       test: this.createFormArray()
     });
-    console.log(this.form)
   }
 
   ngOnInit() {
   }
+  initSection() {
+
+  }
+  initSchedule() {
+    // return new Form
+  }
+
   createFormArray(): FormArray {
     return new FormArray(this.dataSource.map(item => new FormGroup({
       time: new FormControl(item.Time),

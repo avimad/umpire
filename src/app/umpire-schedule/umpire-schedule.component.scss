@@ -1,23 +1,23 @@
-mat-footer-row, mat-row{
-    min-height: 25px !important;
+.container-table{
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 5px;
 }
-mat-header-row{
-    min-height: 25px !important;
+.table th,
+.table td {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  vertical-align: top !important;
+  font-size:.75em;
+  border-color:black;
+ 
 }
-mat-header-cell{
-    color: black;
-    font-size: 12px;
-    display:flex;
-   justify-content:center;
+table .thead-dark th{
+    color:black;
+    background-color:rgb(208, 206, 206);
+   
 }
-mat-cell{
-    font-size: 12px;
-    display:flex;
-   justify-content:center;
-}
-mat-header-row{
-    background-color: rgb(208,206,206);
-}
+
 .red-cell {
     background-color: red
 }
