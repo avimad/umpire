@@ -1,56 +1,34 @@
-<div class="container-table">
+<div class="container-table" *ngFor="let header of locationHeaders | slice: 0:5;">
+  Date :
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
   <table class="table table-bordered">
+
     <thead class="thead-dark ">
       <tr>
-        <th scope="col">
-          <mat-select>
+        <th>Time</th>
+        <th scope="col" *ngFor="let header of locationHeaders; let i=index;">
+          <mat-select [(ngModel)]="locations[0].Id">
             <mat-option *ngFor="let location of locations" [value]="location.Id">
               {{location.name}}
             </mat-option>
           </mat-select>
         </th>
-        <th scope="col">
-          <mat-select>
-            <mat-option *ngFor="let location of locations" [value]="location.Id">
-              {{location.name}}
-            </mat-option>
-          </mat-select>
-        </th>
-        <th scope="col">
-          <mat-select>
-            <mat-option *ngFor="let location of locations" [value]="location.Id">
-              {{location.name}}
-            </mat-option>
-          </mat-select>
-        </th>
-
       </tr>
     </thead>
     <tbody>
-      <tr>
-        
-        <td>
-          <mat-select>
+      <tr *ngFor="let header of locationHeaders; let i=index;">
+        <td> 6:30 AM </td>
+        <td *ngFor="let header of locationHeaders; let i=index;">
+          <mat-select [(ngModel)]="umpires[0].Id">
             <mat-option *ngFor="let umpire of umpires" [value]="umpire.Id">
               {{umpire.name}}
             </mat-option>
           </mat-select>
         </td>
-        <td>
-          <mat-select>
-            <mat-option *ngFor="let umpire of umpires" [value]="umpire.Id">
-              {{umpire.name}}
-            </mat-option>
-          </mat-select>
-        </td>
-        <td>
-          <mat-select>
-            <mat-option *ngFor="let umpire of umpires" [value]="umpire.Id">
-              {{umpire.name}}
-            </mat-option>
-          </mat-select>
-        </td>
-
     </tbody>
   </table>
 

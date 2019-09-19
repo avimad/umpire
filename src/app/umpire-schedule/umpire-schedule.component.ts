@@ -14,12 +14,15 @@ export class UmpireScheduleComponent implements OnInit {
   dataSource = ELEMENT_DATA;
   locations = LOCATIONS;
   umpires = UMPIRES;
+  locationHeaders: number[];
 
   scheduleForm: FormGroup;
   constructor(private fb: FormBuilder) {
     this.scheduleForm = this.fb.group({
       test: this.createFormArray()
     });
+    this.locationHeaders = Array(10).fill(0).map((x, i) => i);
+    console.log(this.locationHeaders);
   }
 
   ngOnInit() {

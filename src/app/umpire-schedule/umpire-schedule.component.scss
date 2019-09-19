@@ -8,13 +8,21 @@
   padding-top: 3px !important;
   padding-bottom: 3px !important;
   vertical-align: top !important;
-  font-size:.75em;
+  font-size:.65em;
   border-color:black;
+  border-bottom: 0.1rem !important;
+
  
+}
+.table td{
+    border-bottom: 0.4rem !important;
+}
+.table-bordered {
+    border: 0.04rem solid #dee2e6;
 }
 table .thead-dark th{
     color:black;
-    background-color:rgb(208, 206, 206);
+    background-color:#368de5e0 !important
    
 }
 
