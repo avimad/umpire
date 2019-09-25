@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
-import { LOCATIONS } from '../models/location';
-import { UMPIRES } from '../models/umpire';
+import { Observable, of, forkJoin } from 'rxjs';
+import { UmpireService } from '../services/umpire.service';
+import { DropdownModel } from '../shared/models/dropdown-model';
+import { map, mergeMap, flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-umpire-schedule',
@@ -9,23 +10,30 @@ import { UMPIRES } from '../models/umpire';
   styleUrls: ['./umpire-schedule.component.scss']
 })
 export class UmpireScheduleComponent implements OnInit {
-  displayedColumns = ['Time', 'LocationDropBox1', 'LocationDropBox2', 'LocationDropBox3', 'LocationDropBox4'];
-  activeList = ['Yes', 'No'];
-  dataSource = ELEMENT_DATA;
-  locations = LOCATIONS;
-  umpires = UMPIRES;
-  locationHeaders: number[];
 
-  scheduleForm: FormGroup;
-  constructor(private fb: FormBuilder) {
-    this.scheduleForm = this.fb.group({
-      test: this.createFormArray()
-    });
-    this.locationHeaders = Array(10).fill(0).map((x, i) => i);
-    console.log(this.locationHeaders);
+  locations$: Observable<DropdownModel[]>;
+  umpires$: Observable<DropdownModel[]>;
+  locationHeaders: Observable<number[]>;
+
+  arrayItems: Observable<number[]>;
+
+
+  constructor(private umpService: UmpireService) {
+
+    this.locationHeaders = of(Array(10).fill(0).map((x, i) => i));
+    this.arrayItems = of(Array(2).fill(0).map((x, i) => i));
   }
 
   ngOnInit() {
+    forkJoin(this.umpService.getUmpires(), this.umpService.getLocation()).subscribe(res => {
+      this.umpires$ = of(res[0]).pipe(
+        map(r => r.map(v => ({ label: v.FirstName, value: v.ID }) as DropdownModel))
+      );
+      this.locations$ = of(res[1]).pipe(
+        map(r => r.map(v => ({ label: v.LocationName, value: v.ID }) as DropdownModel))
+      );
+    });
+
   }
   initSection() {
 
@@ -34,33 +42,5 @@ export class UmpireScheduleComponent implements OnInit {
     // return new Form
   }
 
-  createFormArray(): FormArray {
-    return new FormArray(this.dataSource.map(item => new FormGroup({
-      time: new FormControl(item.Time),
-      location1: new FormControl(),
-      location2: new FormControl(),
-      location3: new FormControl(),
-      location4: new FormControl(),
-      umpire1: new FormControl(item.UmpireBox1),
-      umpire2: new FormControl(item.UmpireBox2),
-      umpire3: new FormControl(item.UmpireBox3),
-      umpire4: new FormControl(item.UmpireBox4)
-    })));
-  }
-
-}
-export interface Element {
-  Time: string;
-  UmpireBox1: string;
-  UmpireBox2: string;
-  UmpireBox3: string;
-  UmpireBox4: string;
 }
 
-const ELEMENT_DATA: Element[] = [
-  {
-    Time: '6:30 AM', UmpireBox1: '#UmpireDropBox1',
-    UmpireBox2: '#UmpireDropBox1', UmpireBox3: '#UmpireDropBox1', UmpireBox4: '#UmpireDropBox1'
-  },
-
-];

@@ -3,22 +3,22 @@
     <mat-form-field>
             <input matInput  placeholder="Filter">
           </mat-form-field>
-    <table mat-table [dataSource]="umpiresInfo" class="mat-elevation-z8">
-        <ng-container matColumnDef="Name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+    <table mat-table [dataSource]="umpiresInfo$" class="mat-elevation-z8">
+        <ng-container matColumnDef="FirstName">
+            <th mat-header-cell *matHeaderCellDef> First Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.FirstName}} </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="Email">
-            <th mat-header-cell *matHeaderCellDef> Email </th>
-            <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+        <ng-container matColumnDef="LastName">
+            <th mat-header-cell *matHeaderCellDef> Last Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.LastName}} </td>
         </ng-container>
 
         <!-- Weight Column -->
-        <ng-container matColumnDef="Contact">
+        <ng-container matColumnDef="PhoneNumber">
             <th mat-header-cell *matHeaderCellDef> Contact </th>
-            <td mat-cell *matCellDef="let element"> {{element.Contact}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.PhoneNumber}} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

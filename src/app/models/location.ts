@@ -1,11 +1,11 @@
 export interface Location {
-    Id?: number;
-    name?: string;
+    ID?: number;
+    LocationName?: string;
 }
-export const LOCATIONS: Location[] = [
-    { Id: 1, name: '#LocationDropBox1' },
-    { Id: 2, name: '#LocationDropBox2' },
-    { Id: 3, name: '#LocationDropBox3' },
-    { Id: 4, name: '#LocationDropBox4' },
-    { Id: 5, name: '#LocationDropBox5' }
-];
+// export const LOCATIONS: Location[] = [
+//     { value: 1, label: '#LocationDropBox1' },
+//     { value: 2, label: '#LocationDropBox2' },
+//     { value: 3, label: '#LocationDropBox3' },
+//     { value: 4, label: '#LocationDropBox4' },
+//     { value: 5, label: '#LocationDropBox5' }
+// ];

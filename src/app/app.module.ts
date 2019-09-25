@@ -13,6 +13,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatTableModule, MatSelectModule, MatInputModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { UmpDropdownComponent } from './shared/components/ump-dropdown/ump-dropdown.component';
+import { HttpClientModule } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -22,7 +25,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     FooterComponent,
     UmpireScheduleComponent,
     UmpireInfoComponent,
-    LandingComponent
+    LandingComponent,
+    UmpDropdownComponent
   ],
   imports: [
     BrowserModule,
@@ -34,9 +38,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MatInputModule,
     MatSelectModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: 'BASE_API_URL', useValue: environment.baseUrl }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

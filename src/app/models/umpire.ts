@@ -1,11 +1,14 @@
-export interface Umpire {
-    Id?: number;
-    name?: string;
+export class Umpire {
+    ID?: number;
+    FirstName?: string;
+    LastName?: string;
+    PhoneNumber?: string;
+    UserType?: string;
 }
-export const UMPIRES: Umpire[] = [
-    { Id: 1, name: '#UmpireDropBox1' },
-    { Id: 2, name: '#UmpireDropBox2' },
-    { Id: 3, name: '#UmpireDropBox3' },
-    { Id: 4, name: '#UmpireDropBox4' },
-    { Id: 5, name: '#UmpireDropBox5' }
-];
+// export const UMPIRES: Umpire[] = [
+//     { value: 1, label: '#UmpireDropBox1' },
+//     { value: 2, label: '#UmpireDropBox2' },
+//     { value: 3, label: '#UmpireDropBox3' },
+//     { value: 4, label: '#UmpireDropBox4' },
+//     { value: 5, label: '#UmpireDropBox5' }
+// ];

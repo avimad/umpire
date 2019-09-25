@@ -1,4 +1,4 @@
-<div class="container-table" *ngFor="let header of locationHeaders | slice: 0:5;">
+<div class="container-table" *ngFor="let header of locationHeaders|  async ;">
   Date :
   <mat-form-field>
     <input matInput [matDatepicker]="picker" placeholder="Choose a date">
@@ -10,24 +10,16 @@
     <thead class="thead-dark ">
       <tr>
         <th>Time</th>
-        <th scope="col" *ngFor="let header of locationHeaders; let i=index;">
-          <mat-select [(ngModel)]="locations[0].Id">
-            <mat-option *ngFor="let location of locations" [value]="location.Id">
-              {{location.name}}
-            </mat-option>
-          </mat-select>
+        <th scope="col" *ngFor="let header of locationHeaders| async; let i=index;">
+            <app-ump-dropdown *ngIf="locations$" [ddModel]="locations$" [selected]="5" ></app-ump-dropdown>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let header of locationHeaders; let i=index;">
+      <tr *ngFor="let header of arrayItems | async; let i=index;">
         <td> 6:30 AM </td>
-        <td *ngFor="let header of locationHeaders; let i=index;">
-          <mat-select [(ngModel)]="umpires[0].Id">
-            <mat-option *ngFor="let umpire of umpires" [value]="umpire.Id">
-              {{umpire.name}}
-            </mat-option>
-          </mat-select>
+        <td contenteditable="true" *ngFor="let header of locationHeaders | async; let i=index;">
+          <app-ump-dropdown *ngIf="umpires$" [ddModel]="umpires$" [selected]="1" ></app-ump-dropdown>
         </td>
     </tbody>
   </table>
