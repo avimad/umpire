@@ -41,6 +41,12 @@ export class UmpireScheduleComponent implements OnInit {
   initSchedule() {
     // return new Form
   }
-
+  addRow() {
+    this.arrayItems.subscribe(res => {
+      res.push(res.length + 1);
+      this.arrayItems = of(res);
+      console.log(this.arrayItems);
+    });
+  }
 }
 

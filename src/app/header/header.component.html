@@ -18,8 +18,10 @@
                     <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" [routerLink]="['/umpire-info']">Umpire Info</a>
                 </li>
                 <li class="nav-item mx-0 mx-lg-1" >
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" [routerLink]="['/register']">Sign-up</a>
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" [routerLink]="['/sign-up']">Sign-up</a>
                 </li>
+                <button mat-raised-button color="primary" *ngIf="!loggedIn" (click)="login()">Login</button>
+                <button mat-raised-button color="primary" *ngIf="loggedIn" (click)="logout()">Logout</button>
             </ul>
         </div>
     </div>

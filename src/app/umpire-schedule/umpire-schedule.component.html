@@ -1,17 +1,28 @@
 <div class="container-table" *ngFor="let header of locationHeaders|  async ;">
-  Date :
-  <mat-form-field>
-    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <table class="table table-bordered">
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-between">
+      <div class="col-md-6">
+        Date :
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6 text-right">
+        <button mat-raised-button color="primary" (click)="addRow()">Add row</button>
+        <button mat-raised-button color="accent">Publish schedule</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-sm">
 
     <thead class="thead-dark ">
       <tr>
         <th>Time</th>
         <th scope="col" *ngFor="let header of locationHeaders| async; let i=index;">
-            <app-ump-dropdown *ngIf="locations$" [ddModel]="locations$" [selected]="5" ></app-ump-dropdown>
+          <app-ump-dropdown *ngIf="locations$" [ddModel]="locations$" [selected]="5"></app-ump-dropdown>
         </th>
       </tr>
     </thead>
@@ -19,7 +30,7 @@
       <tr *ngFor="let header of arrayItems | async; let i=index;">
         <td> 6:30 AM </td>
         <td contenteditable="true" *ngFor="let header of locationHeaders | async; let i=index;">
-          <app-ump-dropdown *ngIf="umpires$" [ddModel]="umpires$" [selected]="1" ></app-ump-dropdown>
+          <app-ump-dropdown *ngIf="umpires$" [ddModel]="umpires$" [selected]="1"></app-ump-dropdown>
         </td>
     </tbody>
   </table>
