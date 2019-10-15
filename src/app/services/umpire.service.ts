@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Umpire } from '../models/umpire';
 import { Location } from '../models/location';
+import { Users } from '../models/users';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +24,9 @@ export class UmpireService {
     return this.baseService.get('Location/GetAllLocations').pipe(
       map((res: any) => res.data)
     );
+  }
+  signUp(data: Users): Observable<Users[]> {
+    return this.baseService.post('User/SignUp', data);
   }
 
 }

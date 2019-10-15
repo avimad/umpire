@@ -1,30 +1,60 @@
 <div class="container su-container">
+    <div *ngIf="isSuccess" class="alert alert-success" role="alert">
+        Registration Successfull
+    </div>
     <mat-card>
-            <h3>Sign Up Form</h3>
-        <div class="row">
-            <div class="col-md-12">
+        <mat-card-title>
+            <h5> Sign Up Form</h5>
+        </mat-card-title>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-md-12">
 
-                <form [formGroup]="signupForm" (ngSubmit)="submit()" class="signup-form">
-                    <mat-form-field class="example-full-width">
-                        <input matInput placeholder="First Name" formControlName="firstname">
-                    </mat-form-field>
+                    <form [formGroup]="signupForm" (ngSubmit)="submit()" class="signup-form">
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="First Name" formControlName="firstname">
+                            <mat-error *ngIf="signupForm.controls.firstname.hasError('required')">
+                                Email is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field class="example-full-width">
-                        <textarea matInput placeholder="Last Name" formControlName="lastname"></textarea>
-                    </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Last Name" formControlName="lastname">
+                            <mat-error *ngIf="signupForm.controls.lastname.hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Email" formControlName="email">
-                    </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Email" formControlName="email">
+                            <mat-error *ngIf="signupForm.controls.email.hasError('email') && !signupForm.controls.email.hasError('required')">
+                                Please enter a valid email address
+                            </mat-error>
+                            <mat-error *ngIf="signupForm.controls.email.hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                    <mat-form-field class="example-full-width">
-                        <textarea matInput placeholder="Phone No." formControlName="phoneno"></textarea>
-                    </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Phone No." formControlName="phoneno">
+                            <mat-error *ngIf="signupForm.controls.phoneno.hasError('required')">
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
 
-                    <button mat-raised-button color="primary" type="submit"> Sign-Up</button>
-                </form>
+                        <mat-form-field class="example-full-width">
+                            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" [disabled]="signupForm.invalid" type="submit"> Sign-Up</button>
+                    </form>
+                </div>
             </div>
-        </div>
-
+        </mat-card-content>
     </mat-card>
+
+
+
+
+
 </div>

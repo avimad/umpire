@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.loggedIn = true;
     });
     this.subscription = this.broadcastService.subscribe('msal:acquireTokenFailure', (payload) => {
+      this.loggedIn = false;
     });
   }
   login() {

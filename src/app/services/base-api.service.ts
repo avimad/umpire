@@ -15,4 +15,10 @@ export class BaseApiService {
     customHeaders.append('ContentType', 'application/json');
     return this.http.get<T>(`${this.baseUrl}` + url, { headers: customHeaders, observe: 'body', responseType: 'json' }).pipe(retry(1));
   }
+  post<T>(url: string, body: {}): Observable<T> {
+    const customHeaders = new HttpHeaders();
+    customHeaders.append('ContentType', 'application/json');
+    return this.http.post<T>(`${this.baseUrl}` + url, body,
+      { headers: customHeaders, observe: 'body', responseType: 'json' }).pipe(retry(1));
+  }
 }
