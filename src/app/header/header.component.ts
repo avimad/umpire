@@ -13,6 +13,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private msalservice: MsalService, private broadcastService: BroadcastService) { }
 
   ngOnInit() {
+
+    if (this.msalservice.getUser() == null) {
+      this.loggedIn = false;
+    } else {
+      this.loggedIn = true;
+    }
+
+
+
     this.broadcastService.subscribe('msal:loginFailure', (payload) => {
       // console.log('login failure ' + JSON.stringify(payload));
       this.loggedIn = false;

@@ -14,7 +14,7 @@
                         <mat-form-field class="example-full-width">
                             <input matInput placeholder="First Name" formControlName="firstname">
                             <mat-error *ngIf="signupForm.controls.firstname.hasError('required')">
-                                Email is <strong>required</strong>
+                                <strong>required</strong>
                             </mat-error>
                         </mat-form-field>
 
@@ -43,8 +43,8 @@
                         </mat-form-field>
 
                         <mat-form-field class="example-full-width">
-                            <textarea matInput placeholder="Description" formControlName="description"></textarea>
-
+                            <textarea [matTextareaAutosize]="true" matInput placeholder="Description" formControlName="description"></textarea>
+                            <mat-hint>500 max</mat-hint>
                         </mat-form-field>
                         <button mat-raised-button color="primary" [disabled]="signupForm.invalid" type="submit"> Sign-Up</button>
                     </form>
