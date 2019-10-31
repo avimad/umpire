@@ -153,7 +153,7 @@ export class UmpireScheduleComponent implements OnInit {
     return this.mainForm.get('scheduleTime') as FormArray;
   }
   get lu() {
-    console.log(this.timeForm.get('lu') as FormArray)
+    console.log(this.timeForm.get('lu') as FormArray);
     return this.timeForm.get('lu') as FormArray;
   }
 }
