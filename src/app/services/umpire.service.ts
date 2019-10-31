@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Umpire } from '../models/umpire';
 import { Location } from '../models/location';
 import { Users } from '../models/users';
+import { AddSchedule } from '../models/schedule';
 
 
 @Injectable({
@@ -27,6 +28,9 @@ export class UmpireService {
   }
   signUp(data: Users): Observable<Users[]> {
     return this.baseService.post('User/SignUp', data);
+  }
+  addSchedule(schedule: AddSchedule) {
+    return this.baseService.post('Schedule/AddSchedule', schedule);
   }
 
 }

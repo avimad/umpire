@@ -1,38 +1,77 @@
-<div class="container-table" *ngFor="let header of locationHeaders|  async ;">
-  <div class="row">
-    <div class="col-md-12 d-flex justify-content-between">
-      <div class="col-md-6">
-        Date :
-        <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+<div class="container-table">
+  <form [formGroup]="mainForm">
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-between">
+        <div class="col-md-6">
+          Date :
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="scheduleDate">
+            <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 text-right">
+          <button mat-button color="primary" (click)="addRow()">Add row</button>
+          <button mat-button color="accent">Publish schedule</button>
+        </div>
       </div>
-      <div class="col-md-6 text-right">
-        <button mat-raised-button color="primary" (click)="addRow()">Add row</button>
-        <button mat-raised-button color="accent">Publish schedule</button>
+    </div>
+
+    <table class="table table-sm">
+
+      <thead class="thead-dark ">
+        <tr>
+          <th>Time</th>
+          <th scope="col" formArrayName="locations"
+            *ngFor="let item of mainForm.get('locations').controls; let x=index">
+            <div [formGroupName]="x">
+              <app-ump-dropdown formControlName="location" *ngIf="locations$" [ddModel]="locations$" [selected]="0">
+              </app-ump-dropdown>
+            </div>
+
+          </th>
+        </tr>
+      </thead>
+      <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime').controls; let x=index">
+        <tr [formGroupName]="x">
+          <td>
+            <app-ump-dropdown formControlName="schTime" *ngIf="timeArray$" [ddModel]="timeArray$"
+              [selected]="'8:00 AM'"></app-ump-dropdown>
+          </td>
+          <td formArrayName="lu" contenteditable="true" *ngFor="let header of  item.get('lu').controls ; let j=index;">
+            <div [formGroupName]="j">
+              <app-ump-dropdown formControlName="umpire" *ngIf="umpires$" [ddModel]="umpires$" [selected]="0"
+                (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
+              </app-ump-dropdown>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+<!-- <div formArrayName="companies">
+    <div *ngFor="let comp of myForm.get('companies').controls; let i=index">
+    <h3>COMPANY {{i+1}}: </h3>
+    <div [formGroupName]="i">
+      <input formControlName="company" />
+      <button (click)="deleteCompany(i)">
+         Delete Company
+      </button>
+      <div formArrayName="projects">
+        <div *ngFor="let project of comp.get('projects').controls; let j=index">
+          <h4>PROJECT {{j+1}}</h4>
+          <div [formGroupName]="j">
+            <input formControlName="projectName" />
+            <button (click)="deleteProject(comp.controls.projects, j)">
+              Delete Project
+            </button>
+          </div>
+        </div>
+        <button (click)="addNewProject(comp.controls.projects)">
+          Add new Project
+        </button>
       </div>
     </div>
   </div>
-
-  <table class="table table-sm">
-
-    <thead class="thead-dark ">
-      <tr>
-        <th>Time</th>
-        <th scope="col" *ngFor="let header of locationHeaders| async; let i=index;">
-          <app-ump-dropdown *ngIf="locations$" [ddModel]="locations$" [selected]="5"></app-ump-dropdown>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let header of arrayItems | async; let i=index;">
-        <td> 6:30 AM </td>
-        <td contenteditable="true" *ngFor="let header of locationHeaders | async; let i=index;">
-          <app-ump-dropdown *ngIf="umpires$" [ddModel]="umpires$" [selected]="1"></app-ump-dropdown>
-        </td>
-    </tbody>
-  </table>
-
-</div>
+</div> -->

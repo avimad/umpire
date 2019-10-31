@@ -7,17 +7,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BaseApiService {
+  authorization = 'Authorization';
+  contenttype = 'ContentType';
+  constructor(private http: HttpClient, @Inject('BASE_API_URL') private baseUrl: string) {
 
-  constructor(private http: HttpClient, @Inject('BASE_API_URL') private baseUrl: string) { }
+  }
 
   get<T>(url: string): Observable<T> {
-    const customHeaders = new HttpHeaders();
-    customHeaders.append('ContentType', 'application/json');
+    const token = localStorage.getItem('msal.idtoken');
+    const customHeaders = new HttpHeaders({
+      [this.authorization]: `Bearer ${token}`,
+      [this.contenttype]: 'application/json'
+    });
     return this.http.get<T>(`${this.baseUrl}` + url, { headers: customHeaders, observe: 'body', responseType: 'json' }).pipe(retry(1));
   }
+
   post<T>(url: string, body: {}): Observable<T> {
-    const customHeaders = new HttpHeaders();
-    customHeaders.append('ContentType', 'application/json');
+    const token = localStorage.getItem('msal.idtoken');
+    const customHeaders = new HttpHeaders({
+      [this.authorization]: `Bearer ${token}`,
+      [this.contenttype]: 'application/json'
+    });
     return this.http.post<T>(`${this.baseUrl}` + url, body,
       { headers: customHeaders, observe: 'body', responseType: 'json' }).pipe(retry(1));
   }

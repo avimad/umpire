@@ -21,6 +21,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { environment } from '../environments/environment';
 import { MsalModule, MsalInterceptor } from '@azure/msal-angular';
 import { SignupComponent } from './signup/signup.component';
+import { OAuthSettings } from 'src/oauth';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
   console.log('client logging' + message);
@@ -56,22 +57,22 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatButtonModule,
     HttpClientModule,
     MsalModule.forRoot({
-      clientID: 'd42ecbea-4a88-4eb5-985f-0cdb8fa4c547',
-      authority: 'https://login.microsoftonline.com/tfp/sflumpires.onmicrosoft.com/B2C_1_signupsignin1',
-      validateAuthority: true,
-      redirectUri: environment.redirectUri,
-      cacheLocation: 'localStorage',
-      storeAuthStateInCookie: isIE, // set to true for IE 11
-      postLogoutRedirectUri: environment.redirectUri,
-      navigateToLoginRequestUrl: true,
-      popUp: !isIE,
-     // consentScopes: ['user.read', 'openid', 'profile', 'api://eb3e3c40-0442-40e1-ad5a-59889e15b439/access_as_user'],
-      unprotectedResources: ['https://www.microsoft.com/en-us/'],
-      // tslint:disable-next-line:object-literal-shorthand
-     // protectedResourceMap: protectedResourceMap,
-      logger: loggerCallback,
-      correlationId: '1234',
-      piiLoggingEnabled: true
+      clientID: OAuthSettings.appId,
+    //   authority: 'https://login.microsoftonline.com/tfp/sflumpires.onmicrosoft.com/B2C_1_signupsignin1',
+    //   validateAuthority: true,
+    //   redirectUri: environment.redirectUri,
+    //   cacheLocation: 'localStorage',
+    //   storeAuthStateInCookie: isIE, // set to true for IE 11
+    //   postLogoutRedirectUri: environment.redirectUri,
+    //   navigateToLoginRequestUrl: true,
+    //   popUp: !isIE,
+    //  // consentScopes: ['user.read', 'openid', 'profile', 'api://eb3e3c40-0442-40e1-ad5a-59889e15b439/access_as_user'],
+    //   unprotectedResources: ['https://www.microsoft.com/en-us/'],
+    //   // tslint:disable-next-line:object-literal-shorthand
+    //  // protectedResourceMap: protectedResourceMap,
+    //   logger: loggerCallback,
+    //   correlationId: '1234',
+    //   piiLoggingEnabled: true
     }
     ),
   ],

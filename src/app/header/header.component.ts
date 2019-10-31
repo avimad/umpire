@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MsalService, BroadcastService } from '@azure/msal-angular';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,13 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   loggedIn = false;
-  constructor(private msalservice: MsalService, private broadcastService: BroadcastService) { }
+  constructor(private msalservice: MsalService, private broadcastService: BroadcastService,
+              private authservice: AuthService) { }
 
   ngOnInit() {
-
+    console.log(this.msalservice.getUser());
     if (this.msalservice.getUser() == null) {
+
       this.loggedIn = false;
     } else {
       this.loggedIn = true;
@@ -38,10 +41,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
   login() {
-    this.msalservice.loginPopup();
+    this.authservice.signIn();
   }
   logout() {
-    this.msalservice.logout();
+    this.authservice.signOut();
     this.loggedIn = false;
   }
   ngOnDestroy() {
