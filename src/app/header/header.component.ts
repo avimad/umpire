@@ -10,34 +10,33 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
-  loggedIn = false;
+ // loggedIn = false;
   constructor(private msalservice: MsalService, private broadcastService: BroadcastService,
               private authservice: AuthService) { }
 
   ngOnInit() {
-    console.log(this.msalservice.getUser());
-    if (this.msalservice.getUser() == null) {
+    // if (!this.authservice.authenticated) {
 
-      this.loggedIn = false;
-    } else {
-      this.loggedIn = true;
-    }
+    //   // this.loggedIn = false;
+    // } else {
+    //  //  this.loggedIn = true;
+    // }
 
 
 
     this.broadcastService.subscribe('msal:loginFailure', (payload) => {
       // console.log('login failure ' + JSON.stringify(payload));
-      this.loggedIn = false;
+    //  this.loggedIn = false;
 
     });
 
     this.broadcastService.subscribe('msal:loginSuccess', (payload) => {
-      console.log('login success ' + JSON.stringify(payload));
+   //   console.log('login success ' + JSON.stringify(payload));
       //  localStorage.setItem('accessToken', payload._token);
-      this.loggedIn = true;
+     // this.loggedIn = true;
     });
     this.subscription = this.broadcastService.subscribe('msal:acquireTokenFailure', (payload) => {
-      this.loggedIn = false;
+     // this.loggedIn = false;
     });
   }
   login() {
@@ -45,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   logout() {
     this.authservice.signOut();
-    this.loggedIn = false;
+   // this.loggedIn = false;
   }
   ngOnDestroy() {
     this.broadcastService.getMSALSubject().next(1);

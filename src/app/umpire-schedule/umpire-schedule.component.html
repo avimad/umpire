@@ -10,9 +10,9 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
           <button mat-button color="primary" (click)="addRow()">Add row</button>
-          <button mat-button color="accent">Publish schedule</button>
+          <!-- <button mat-button color="accent">Publish schedule</button> -->
         </div>
       </div>
     </div>

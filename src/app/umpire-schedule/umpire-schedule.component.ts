@@ -5,6 +5,7 @@ import { DropdownModel } from '../shared/models/dropdown-model';
 import { map, mergeMap, flatMap } from 'rxjs/operators';
 import { AddSchedule } from '../models/schedule';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-umpire-schedule',
@@ -28,7 +29,7 @@ export class UmpireScheduleComponent implements OnInit {
   timeForm: FormGroup;
 
 
-  constructor(private umpService: UmpireService, private fb: FormBuilder) {
+  constructor(private umpService: UmpireService, private fb: FormBuilder, private authservice: AuthService) {
     this.createForm();
     this.locationHeaders = of(Array(12).fill(0).map((x, i) => i));
     this.arrayItems = of(Array(2).fill(0).map((x, i) => i));
@@ -104,7 +105,7 @@ export class UmpireScheduleComponent implements OnInit {
   }
   selectedUmpire(time, umpire, date, location) {
     console.log(time, umpire, date, location);
-   // this.addSch.ScheduleDate = ;
+    // this.addSch.ScheduleDate = ;
     // this.addSch.UmpireID = Number(e);
     // console.log(this.addSch);
     // this.umpService.addSchedule(this.addSch).subscribe();

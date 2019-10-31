@@ -1,8 +1,11 @@
 <div class="container content-wrapper">
     <h3>Umpires Information</h3>
-    <mat-form-field>
-            <input matInput  placeholder="Filter">
-          </mat-form-field>
+    <button *ngIf="authservice.getRole()=='admin'" mat-raised-button color="primary" (click)="openAddUmpire()" type="button">
+        Add Umpire</button>
+    <!-- <mat-form-field>
+        <input matInput placeholder="Filter">
+        
+    </mat-form-field> -->
     <table mat-table [dataSource]="umpiresInfo$" class="mat-elevation-z8">
         <ng-container matColumnDef="FirstName">
             <th mat-header-cell *matHeaderCellDef> First Name </th>

@@ -9,6 +9,7 @@ import { UmpireScheduleComponent } from './umpire-schedule/umpire-schedule.compo
 import { UmpireInfoComponent } from './umpire-info/umpire-info.component';
 import { LandingComponent } from './landing/landing.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ToastrModule } from 'ngx-toastr';
 
 import {
   MatTableModule, MatSelectModule, MatInputModule, MatDatepickerModule,
@@ -22,6 +23,7 @@ import { environment } from '../environments/environment';
 import { MsalModule, MsalInterceptor } from '@azure/msal-angular';
 import { SignupComponent } from './signup/signup.component';
 import { OAuthSettings } from 'src/oauth';
+import { AddUmpireComponent } from './add-umpire/add-umpire.component';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
   console.log('client logging' + message);
@@ -40,7 +42,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     UmpireInfoComponent,
     LandingComponent,
     UmpDropdownComponent,
-    SignupComponent
+    SignupComponent,
+    AddUmpireComponent
   ],
   imports: [
     BrowserModule,
@@ -56,23 +59,24 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatCardModule,
     MatButtonModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     MsalModule.forRoot({
       clientID: OAuthSettings.appId,
-    //   authority: 'https://login.microsoftonline.com/tfp/sflumpires.onmicrosoft.com/B2C_1_signupsignin1',
-    //   validateAuthority: true,
-    //   redirectUri: environment.redirectUri,
-    //   cacheLocation: 'localStorage',
-    //   storeAuthStateInCookie: isIE, // set to true for IE 11
-    //   postLogoutRedirectUri: environment.redirectUri,
-    //   navigateToLoginRequestUrl: true,
-    //   popUp: !isIE,
-    //  // consentScopes: ['user.read', 'openid', 'profile', 'api://eb3e3c40-0442-40e1-ad5a-59889e15b439/access_as_user'],
-    //   unprotectedResources: ['https://www.microsoft.com/en-us/'],
-    //   // tslint:disable-next-line:object-literal-shorthand
-    //  // protectedResourceMap: protectedResourceMap,
-    //   logger: loggerCallback,
-    //   correlationId: '1234',
-    //   piiLoggingEnabled: true
+      // authority: 'https://login.microsoftonline.com/tfp/sflumpires.onmicrosoft.com/B2C_1_signupsignin1',
+      //   validateAuthority: true,
+      // redirectUri: environment.redirectUri,
+      //   cacheLocation: 'localStorage',
+      //   storeAuthStateInCookie: isIE, // set to true for IE 11
+      //   postLogoutRedirectUri: environment.redirectUri,
+      //   navigateToLoginRequestUrl: true,
+      //   popUp: !isIE,
+      //  // consentScopes: ['user.read', 'openid', 'profile', 'api://eb3e3c40-0442-40e1-ad5a-59889e15b439/access_as_user'],
+      //   unprotectedResources: ['https://www.microsoft.com/en-us/'],
+      //   // tslint:disable-next-line:object-literal-shorthand
+      //  // protectedResourceMap: protectedResourceMap,
+      //   logger: loggerCallback,
+      //   correlationId: '1234',
+      //   piiLoggingEnabled: true
     }
     ),
   ],
@@ -82,7 +86,10 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
       multi: true
-  }
+    }
+  ],
+  entryComponents: [
+    AddUmpireComponent
   ],
   bootstrap: [AppComponent]
 })

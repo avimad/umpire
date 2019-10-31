@@ -4,6 +4,7 @@ export class Umpire {
     LastName?: string;
     PhoneNumber?: string;
     UserType?: string;
+    EmailAddress?: string;
 }
 // export const UMPIRES: Umpire[] = [
 //     { value: 1, label: '#UmpireDropBox1' },

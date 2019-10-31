@@ -32,5 +32,8 @@ export class UmpireService {
   addSchedule(schedule: AddSchedule) {
     return this.baseService.post('Schedule/AddSchedule', schedule);
   }
+  addUmpire(umpire: Umpire) {
+    return this.baseService.post('Umpire/AddUmpire', umpire);
+  }
 
 }
