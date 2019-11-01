@@ -51,7 +51,7 @@ export class AuthService {
       .catch((reason) => {
         // this.alertsService.add('Get token failed', JSON.stringify(reason, null, 2));
       });
-
+    localStorage.setItem('token', result);
     return result;
   }
 

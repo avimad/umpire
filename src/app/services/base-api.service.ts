@@ -15,7 +15,8 @@ export class BaseApiService {
   }
 
   get<T>(url: string): Observable<T> {
-    const token = this.authservice.getAccessToken();
+    const token = localStorage.getItem('token');
+    console.log(token);
     const customHeaders = new HttpHeaders({
       [this.authorization]: `Bearer ${token}`,
       [this.contenttype]: 'application/json'
@@ -24,7 +25,7 @@ export class BaseApiService {
   }
 
   post<T>(url: string, body: {}): Observable<T> {
-    const token = this.authservice.getAccessToken();
+    const token = localStorage.getItem('token');
     const customHeaders = new HttpHeaders({
       [this.authorization]: `Bearer ${token}`,
       [this.contenttype]: 'application/json'
