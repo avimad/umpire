@@ -17,7 +17,7 @@ export class UmpireInfoComponent implements OnInit {
   displayedColumns: string[] = ['FirstName', 'LastName', 'PhoneNumber'];
   umpiresInfo$: Observable<Umpire[]>;
   constructor(private umpireService: UmpireService,
-              private dialog: MatDialog, private authservice: AuthService, private toastr: ToastrService) { }
+              private dialog: MatDialog, public authservice: AuthService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getUmpires();

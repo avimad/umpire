@@ -29,7 +29,7 @@ export class UmpireScheduleComponent implements OnInit {
   timeForm: FormGroup;
 
 
-  constructor(private umpService: UmpireService, private fb: FormBuilder, private authservice: AuthService) {
+  constructor(private umpService: UmpireService, private fb: FormBuilder, public  authservice: AuthService) {
     this.createForm();
     this.locationHeaders = of(Array(12).fill(0).map((x, i) => i));
     this.arrayItems = of(Array(2).fill(0).map((x, i) => i));

@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
  // loggedIn = false;
   constructor(private msalservice: MsalService, private broadcastService: BroadcastService,
-              private authservice: AuthService) { }
+              public authservice: AuthService) { }
 
   ngOnInit() {
     // if (!this.authservice.authenticated) {

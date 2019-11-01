@@ -23,7 +23,7 @@
         <tr>
           <th>Time</th>
           <th scope="col" formArrayName="locations"
-            *ngFor="let item of mainForm.get('locations').controls; let x=index">
+            *ngFor="let item of mainForm.get('locations')['controls']; let x=index">
             <div [formGroupName]="x">
               <app-ump-dropdown formControlName="location" *ngIf="locations$" [ddModel]="locations$" [selected]="0">
               </app-ump-dropdown>
@@ -32,7 +32,7 @@
           </th>
         </tr>
       </thead>
-      <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime').controls; let x=index">
+      <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime')['controls']; let x=index">
         <tr [formGroupName]="x">
           <td>
             <app-ump-dropdown formControlName="schTime" *ngIf="timeArray$" [ddModel]="timeArray$"

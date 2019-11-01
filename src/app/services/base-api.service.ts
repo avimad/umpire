@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { retry } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,12 @@ import { Observable } from 'rxjs';
 export class BaseApiService {
   authorization = 'Authorization';
   contenttype = 'ContentType';
-  constructor(private http: HttpClient, @Inject('BASE_API_URL') private baseUrl: string) {
+  constructor(private http: HttpClient, @Inject('BASE_API_URL') private baseUrl: string, private authservice: AuthService) {
 
   }
 
   get<T>(url: string): Observable<T> {
-    const token = localStorage.getItem('msal.idtoken');
+    const token = this.authservice.getAccessToken();
     const customHeaders = new HttpHeaders({
       [this.authorization]: `Bearer ${token}`,
       [this.contenttype]: 'application/json'
@@ -23,7 +24,7 @@ export class BaseApiService {
   }
 
   post<T>(url: string, body: {}): Observable<T> {
-    const token = localStorage.getItem('msal.idtoken');
+    const token = this.authservice.getAccessToken();
     const customHeaders = new HttpHeaders({
       [this.authorization]: `Bearer ${token}`,
       [this.contenttype]: 'application/json'
