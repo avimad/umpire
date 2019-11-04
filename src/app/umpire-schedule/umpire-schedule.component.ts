@@ -29,7 +29,7 @@ export class UmpireScheduleComponent implements OnInit {
   timeForm: FormGroup;
 
 
-  constructor(private umpService: UmpireService, private fb: FormBuilder, public  authservice: AuthService) {
+  constructor(private umpService: UmpireService, private fb: FormBuilder, public authservice: AuthService) {
     this.createForm();
     this.locationHeaders = of(Array(12).fill(0).map((x, i) => i));
     this.arrayItems = of(Array(2).fill(0).map((x, i) => i));
@@ -38,10 +38,10 @@ export class UmpireScheduleComponent implements OnInit {
 
   ngOnInit() {
     forkJoin(this.umpService.getUmpires(), this.umpService.getLocation()).subscribe(res => {
-      res[0].unshift({ FirstName: '#select umpire', ID: 0 });
+      res[0].unshift({ FirstName: '#select', LastName: 'umpire', ID: 0 });
       res[1].unshift({ LocationName: '#select location', ID: 0 });
       this.umpires$ = of(res[0]).pipe(
-        map(r => r.map(v => ({ label: v.FirstName, value: v.ID }) as DropdownModel)),
+        map(r => r.map(v => ({ label: v.FirstName + ' ' + v.LastName, value: v.ID }) as DropdownModel)),
       );
       this.locations$ = of(res[1]).pipe(
         map(r => r.map(v => ({ label: v.LocationName, value: v.ID }) as DropdownModel))
@@ -131,7 +131,7 @@ export class UmpireScheduleComponent implements OnInit {
     let mints;
     let ampm;
     const times = [];
-    for (let i = 480; i < 1140; i += 5) {
+    for (let i = 480; i <= 1140; i += 5) {
       hours = Math.floor(i / 60);
       mints = i % 60;
       if (mints < 10) {

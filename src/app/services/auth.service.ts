@@ -94,7 +94,7 @@ export class AuthService {
     return this.userInfo;
   }
   getRole() {
-    return localStorage.getItem('userRole');
+    return localStorage.getItem('userRole').toLowerCase();
   }
   getUserName() {
     return localStorage.getItem('userName');
