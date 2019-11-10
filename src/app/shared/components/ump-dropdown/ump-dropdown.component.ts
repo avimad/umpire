@@ -19,6 +19,7 @@ export class UmpDropdownComponent implements OnInit, ControlValueAccessor {
 
   @Input() ddModel: Observable<DropdownModel[]>;
   @Input() selected: number;
+  @Input() disable = false;
 
   @Output() selectOption = new EventEmitter<DropdownModel>();
   private onChange;
@@ -30,6 +31,12 @@ export class UmpDropdownComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.value = this.selected;
+    if (this.disable) {
+      this.dropControl.disable();
+    } else {
+      this.dropControl.enable();
+    }
+
   }
   getSelected(value) {
     this.onChange(value.value);

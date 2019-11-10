@@ -1,4 +1,10 @@
-<div class="container-table">
+<div class="row">
+  <div class="col-md-6"></div>
+  <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
+    <button mat-button color="primary" (click)="addSchedule()">Add Schedule</button>
+  </div>
+</div>
+<div class="container-table" *ngFor="let mainForm of scheduleForm ; let z=index;">
   <form [formGroup]="mainForm">
     <div class="row">
       <div class="col-md-12 d-flex justify-content-between">
@@ -11,7 +17,7 @@
           </mat-form-field>
         </div>
         <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
-          <button mat-button color="primary" (click)="addRow()">Add row</button>
+          <button mat-button color="primary" (click)="addRow(z)">Add row</button>
           <!-- <button mat-button color="accent">Publish schedule</button> -->
         </div>
       </div>
@@ -25,8 +31,13 @@
           <th scope="col" formArrayName="locations"
             *ngFor="let item of mainForm.get('locations')['controls']; let x=index">
             <div [formGroupName]="x">
-              <app-ump-dropdown formControlName="location" *ngIf="locations$" [ddModel]="locations$" [selected]="0">
+              <app-ump-dropdown [disable]="true" formControlName="location" *ngIf="isDisable && locations$"
+                [ddModel]="locations$" [selected]="0">
               </app-ump-dropdown>
+              <app-ump-dropdown  [disable]="mainForm.value.locations[x].location > 0?true:false"
+                formControlName="location" *ngIf="locations$" [ddModel]="!isDisable && locations$" [selected]="0">
+              </app-ump-dropdown>
+              <a [routerLink]="['/location-map',mainForm.value.locations[x].location]" target="_blank"> <i class="fas fa-map-marker-alt"></i></a>
             </div>
 
           </th>
@@ -35,12 +46,19 @@
       <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime')['controls']; let x=index">
         <tr [formGroupName]="x">
           <td>
-            <app-ump-dropdown formControlName="schTime" *ngIf="timeArray$" [ddModel]="timeArray$"
-              [selected]="'8:00 AM'"></app-ump-dropdown>
+            <app-ump-dropdown  [disable]="true" formControlName="schTime" *ngIf="isDisable && timeArray$"
+              [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
+            <app-ump-dropdown  [disable]="item.value.schTime?true:false" formControlName="schTime" *ngIf=" !isDisable && timeArray$"
+              [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
           </td>
           <td formArrayName="lu" contenteditable="true" *ngFor="let header of  item.get('lu').controls ; let j=index;">
             <div [formGroupName]="j">
-              <app-ump-dropdown formControlName="umpire" *ngIf="umpires$" [ddModel]="umpires$" [selected]="0"
+              <app-ump-dropdown  [disable]="true" formControlName="umpire" *ngIf="isDisable && umpires$"
+                [ddModel]="umpires$" [selected]="0"
+                (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
+              </app-ump-dropdown>
+              <app-ump-dropdown  [disable]="false" formControlName="umpire" *ngIf="!isDisable && umpires$"
+                [ddModel]="umpires$" [selected]="0"
                 (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
               </app-ump-dropdown>
             </div>
@@ -50,28 +68,3 @@
     </table>
   </form>
 </div>
-<!-- <div formArrayName="companies">
-    <div *ngFor="let comp of myForm.get('companies').controls; let i=index">
-    <h3>COMPANY {{i+1}}: </h3>
-    <div [formGroupName]="i">
-      <input formControlName="company" />
-      <button (click)="deleteCompany(i)">
-         Delete Company
-      </button>
-      <div formArrayName="projects">
-        <div *ngFor="let project of comp.get('projects').controls; let j=index">
-          <h4>PROJECT {{j+1}}</h4>
-          <div [formGroupName]="j">
-            <input formControlName="projectName" />
-            <button (click)="deleteProject(comp.controls.projects, j)">
-              Delete Project
-            </button>
-          </div>
-        </div>
-        <button (click)="addNewProject(comp.controls.projects)">
-          Add new Project
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->

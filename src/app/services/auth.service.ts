@@ -27,7 +27,6 @@ export class AuthService {
   async signIn(): Promise<void> {
     const result = await this.msalService.loginPopup(OAuthSettings.scopes)
       .catch((reason) => {
-        console.log(reason);
         // this.alertsService.add('Login failed', JSON.stringify(reason, null, 2));
       });
 
@@ -69,7 +68,6 @@ export class AuthService {
           .catch((reason) => {
             done(reason, null);
           });
-        console.log('access Token', token);
         if (token) {
           done(null, token);
         } else {
@@ -85,7 +83,7 @@ export class AuthService {
     this.userInfo.Name = graphUser.displayName;
     this.userInfo.Email = graphUser.userPrincipalName;
     this.userInfo.Role = graphUser.jobTitle;
-    localStorage.setItem('userRole', this.userInfo.Role);
+    localStorage.setItem('userRole', this.userInfo.Role.toLowerCase());
     localStorage.setItem('userName', this.userInfo.Name);
     // user.displayName = graphUser.displayName;
     // Prefer the mail property, but fall back to userPrincipalName
@@ -94,7 +92,7 @@ export class AuthService {
     return this.userInfo;
   }
   getRole() {
-    return localStorage.getItem('userRole').toLowerCase();
+    return localStorage.getItem('userRole');
   }
   getUserName() {
     return localStorage.getItem('userName');

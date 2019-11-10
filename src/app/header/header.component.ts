@@ -25,18 +25,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
     this.broadcastService.subscribe('msal:loginFailure', (payload) => {
-      // console.log('login failure ' + JSON.stringify(payload));
-    //  this.loggedIn = false;
 
     });
 
     this.broadcastService.subscribe('msal:loginSuccess', (payload) => {
-   //   console.log('login success ' + JSON.stringify(payload));
-      //  localStorage.setItem('accessToken', payload._token);
-     // this.loggedIn = true;
     });
     this.subscription = this.broadcastService.subscribe('msal:acquireTokenFailure', (payload) => {
-     // this.loggedIn = false;
+     this.authservice.signOut();
     });
   }
   login() {

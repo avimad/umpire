@@ -10,10 +10,11 @@ import { UmpireInfoComponent } from './umpire-info/umpire-info.component';
 import { LandingComponent } from './landing/landing.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
+import { AgmCoreModule } from '@agm/core';
 
 import {
   MatTableModule, MatSelectModule, MatInputModule, MatDatepickerModule,
-  MatNativeDateModule, MatButtonModule, MatCardModule
+  MatNativeDateModule, MatButtonModule, MatCardModule, MatDialog, MatDialogModule
 } from '@angular/material';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { MsalModule, MsalInterceptor } from '@azure/msal-angular';
 import { SignupComponent } from './signup/signup.component';
 import { OAuthSettings } from 'src/oauth';
 import { AddUmpireComponent } from './add-umpire/add-umpire.component';
+import { LocationMapComponent } from './location-map/location-map.component';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
   console.log('client logging' + message);
@@ -43,7 +45,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     LandingComponent,
     UmpDropdownComponent,
     SignupComponent,
-    AddUmpireComponent
+    AddUmpireComponent,
+    LocationMapComponent
   ],
   imports: [
     BrowserModule,
@@ -58,16 +61,20 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatDatepickerModule,
     MatCardModule,
     MatButtonModule,
+    MatDialogModule,
     HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA76b1jIoYGeytxeEcRm5cO134WjAsU4Fc'
+    }),
     ToastrModule.forRoot(),
     MsalModule.forRoot({
       clientID: OAuthSettings.appId,
       // authority: 'https://login.microsoftonline.com/tfp/sflumpires.onmicrosoft.com/B2C_1_signupsignin1',
       //   validateAuthority: true,
-      // redirectUri: environment.redirectUri,
+      redirectUri: environment.redirectUri,
       //   cacheLocation: 'localStorage',
       //   storeAuthStateInCookie: isIE, // set to true for IE 11
-      //   postLogoutRedirectUri: environment.redirectUri,
+      postLogoutRedirectUri: environment.redirectUri,
       //   navigateToLoginRequestUrl: true,
       //   popUp: !isIE,
       //  // consentScopes: ['user.read', 'openid', 'profile', 'api://eb3e3c40-0442-40e1-ad5a-59889e15b439/access_as_user'],

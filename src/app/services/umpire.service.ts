@@ -36,4 +36,21 @@ export class UmpireService {
     return this.baseService.post('Umpire/AddUmpire', umpire);
   }
 
+  getAllSchedule(): Observable<AddSchedule[]> {
+    return this.baseService.get('Schedule/GetAllSchedules').pipe(
+      map((res: any) => res.data)
+    );
+  }
+
+  getAllGroupedSchedule(): Observable<any[]> {
+    return this.baseService.get('Schedule/GetGroupedSchedule').pipe(
+      map((res: any) => res.data)
+    );
+  }
+
+  getLocationById(locId) {
+    return this.baseService.post('Location/GetMapLocationById?id=' + locId, { id: locId });
+  }
+
+
 }

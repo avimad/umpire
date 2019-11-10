@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, from, zip } from 'rxjs';
 import { UmpireService } from '../services/umpire.service';
 import { DropdownModel } from '../shared/models/dropdown-model';
-import { map, mergeMap, flatMap } from 'rxjs/operators';
-import { AddSchedule } from '../models/schedule';
+import { map, mergeMap, flatMap, groupBy, toArray, reduce } from 'rxjs/operators';
+import { AddSchedule, Schedule, Time } from '../models/schedule';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { MatDialog } from '@angular/material';
+import { LocationMapComponent } from '../location-map/location-map.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-umpire-schedule',
@@ -17,7 +20,7 @@ export class UmpireScheduleComponent implements OnInit {
   locations$: Observable<DropdownModel[]>;
   umpires$: Observable<DropdownModel[]>;
   locationHeaders: Observable<number[]>;
-  schedules: FormGroup[] = [];
+  // schedules: FormGroup[] = [];
 
   arrayItems: Observable<number[]>;
 
@@ -25,11 +28,21 @@ export class UmpireScheduleComponent implements OnInit {
   addSchArray: AddSchedule[] = [];
   addSch: AddSchedule = { TeamID: 1 };
 
+  isDisable = false;
+
   mainForm: FormGroup;
   timeForm: FormGroup;
+  umpireForm: FormGroup;
+  locationForm: FormGroup;
+
+  scheduleForm: FormGroup[] = [];
+
+  schedules: Schedule[] = [];
+  schedule: Schedule = {};
 
 
-  constructor(private umpService: UmpireService, private fb: FormBuilder, public authservice: AuthService) {
+  constructor(private umpService: UmpireService, private fb: FormBuilder, public authservice: AuthService,
+    private dilaog: MatDialog, private router: Router) {
     this.createForm();
     this.locationHeaders = of(Array(12).fill(0).map((x, i) => i));
     this.arrayItems = of(Array(2).fill(0).map((x, i) => i));
@@ -37,6 +50,13 @@ export class UmpireScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAllSchedule();
+    const role = this.authservice.getRole();
+    if (role) {
+      if (role === 'admin') {
+        this.isDisable = false;
+      } else { this.isDisable = true; }
+    }
     forkJoin(this.umpService.getUmpires(), this.umpService.getLocation()).subscribe(res => {
       res[0].unshift({ FirstName: '#select', LastName: 'umpire', ID: 0 });
       res[1].unshift({ LocationName: '#select location', ID: 0 });
@@ -56,23 +76,22 @@ export class UmpireScheduleComponent implements OnInit {
     this.mainForm = this.fb.group({
       scheduleDate: ['', Validators.required],
       locations: this.fb.array([this.createLocationForm()]),
-      scheduleTime: this.fb.array([this.createTimeForm()])
+      scheduleTime: this.fb.array([])
     });
     this.mainForm.valueChanges.subscribe(res => {
-      console.log(res);
     });
     const locArray = this.mainForm.get('locations') as FormArray;
     for (let i = 0; i <= 10; i++) {
       locArray.push(this.createLocationForm());
 
     }
-    return this.mainForm;
-  }
 
+    //  return this.mainForm;
+  }
   // time form
   createTimeForm() {
     this.timeForm = this.fb.group({
-      schTime: ['8:00 AM', Validators.required],
+      schTime: ['', Validators.required],
       lu: this.fb.array([this.createUmpireForm()])
 
     });
@@ -89,15 +108,117 @@ export class UmpireScheduleComponent implements OnInit {
   }
   // location and umpire
   createLocationForm() {
-    return this.fb.group({
+    this.locationForm = this.fb.group({
       location: ['0', Validators.required]
     });
+    return this.locationForm;
   }
   createUmpireForm() {
-    return this.fb.group({
+    this.umpireForm = this.fb.group({
       umpire: ['0', Validators.required]
     });
+
+    return this.umpireForm;
   }
+
+  getAllSchedule() {
+    this.umpService.getAllSchedule().subscribe(res => {
+      if (res.length > 0) {
+        // tslint:disable-next-line:no-string-literal
+        const sch = from(res);
+        const group = sch.pipe(
+          // tslint:disable-next-line:no-string-literal
+          groupBy(p => p.ScheduleDate),
+          mergeMap(group$ =>
+            group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
+          ),
+          // mergeMap(g => zip(of(g.key), g.pipe(toArray())),
+          map(arr => ({ ScheduleDate: arr[0], schtime: arr.slice(1) } as Schedule))
+        )
+          .subscribe(sched => {
+            this.schedule = {};
+            this.schedule.schtime = [];
+            this.schedule.location = [];
+            this.schedule.ScheduleDate = sched.ScheduleDate;
+            this.groupTime(sched.schtime);
+            this.groupLocation(sched.schtime);
+            //  this.schedule.schtime.push();
+            this.schedules.push(this.schedule);
+            console.log(this.schedules);
+
+          });
+        this.schedules.forEach((ele, i) => {
+          this.createForm();
+          this.mainForm.controls.scheduleDate.setValue(new Date(this.schedules[i].ScheduleDate));
+
+          const timeArray = this.mainForm.get('scheduleTime') as FormArray;
+          const locationArray = this.mainForm.get('locations') as FormArray;
+          this.schedules[i].location.forEach((e, x) => {
+            this.createLocationForm();
+            this.locationForm.controls.location.setValue(e);
+            locationArray.controls[x] = this.locationForm;
+          });
+          // timeArray.removeAt(0);
+          this.schedules[i].schtime.forEach((elem, j) => {
+            this.createTimeForm();
+            const umpireArray = this.timeForm.get('lu') as FormArray;
+
+            this.timeForm.controls.schTime.setValue(elem.ScheduleTime);
+
+            timeArray.push(this.timeForm);
+
+            elem.schUmpire.forEach((el, k) => {
+              this.createUmpireForm();
+              this.umpireForm.controls.umpire.setValue(el.UmpireID);
+              umpireArray.controls[k] = this.umpireForm;
+            });
+
+          });
+          console.log(this.mainForm);
+          this.scheduleForm.push(this.mainForm);
+        });
+      } else {
+        this.scheduleForm.push(this.mainForm);
+      }
+
+
+    });
+  }
+  groupTime(res: Time[]) {
+    const sch = from(res);
+    let time;
+    const group = sch.pipe(
+      // tslint:disable-next-line:no-string-literal
+      groupBy(p => p.ScheduleTime),
+      mergeMap(group$ =>
+        group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
+      ),
+      // mergeMap(g => zip(of(g.key), g.pipe(toArray())),
+      map(arr => ({ ScheduleTime: arr[0], schUmpire: arr.slice(1) } as Time))
+    )
+      .subscribe(sched => {
+        time = sched;
+        this.schedule.schtime.push(time);
+      });
+    return time;
+  }
+  groupLocation(res: Time[]) {
+    const sch = from(res);
+    sch.pipe(
+      // tslint:disable-next-line:no-string-literal
+      groupBy(p => p.LocationID),
+      mergeMap(group$ =>
+        group$.pipe(reduce((acc, cur) => [...acc, cur], [`${group$.key}`]))
+      ),
+      // mergeMap(g => zip(of(g.key), g.pipe(toArray())),
+      map(arr => ({ ScheduleTime: arr[0], schUmpire: arr.slice(1) } as Time))
+    )
+      .subscribe(sched => {
+        this.schedule.location.push(Number(sched.ScheduleTime));
+      });
+
+  }
+
   // select change location ,umpire,time
   selectedLocation(e, i, j) {
 
@@ -105,22 +226,34 @@ export class UmpireScheduleComponent implements OnInit {
   }
   selectedUmpire(time, umpire, date, location) {
     console.log(time, umpire, date, location);
-    // this.addSch.ScheduleDate = ;
-    // this.addSch.UmpireID = Number(e);
-    // console.log(this.addSch);
-    // this.umpService.addSchedule(this.addSch).subscribe();
+
+    if (time && umpire && date && location) {
+      this.addSch.ScheduleDate = date;
+      this.addSch.UmpireID = umpire;
+      this.addSch.LocationID = location;
+      this.addSch.ScheduleTime = time;
+      this.umpService.addSchedule(this.addSch).subscribe(res => {
+      });
+    }
+
+
   }
   selectedTime(e, x) {
     // this.mainForm.get('scheduleTime')[0]['schTime'].va
     // this.addSch.ScheduleTime = e;
+  }
+
+  addSchedule() {
+    this.createForm();
+    this.scheduleForm.push(this.mainForm);
   }
   dateChanged(e) {
     // this.addSch.ScheduleDate = e.value;
   }
 
 
-  addRow() {
-    const timeArray = this.mainForm.get('scheduleTime') as FormArray;
+  addRow(index) {
+    const timeArray = this.scheduleForm[index].get('scheduleTime') as FormArray;
     timeArray.push(this.createTimeForm());
   }
 
@@ -153,8 +286,12 @@ export class UmpireScheduleComponent implements OnInit {
     return this.mainForm.get('scheduleTime') as FormArray;
   }
   get lu() {
-    console.log(this.timeForm.get('lu') as FormArray);
     return this.timeForm.get('lu') as FormArray;
+  }
+
+
+  loc(e) {
+    this.router.navigate(['location-map', e]);
   }
 }
 
