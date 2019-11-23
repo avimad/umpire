@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MsalService, BroadcastService } from '@azure/msal-angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { UmpireService } from '../services/umpire.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,16 @@ import { AuthService } from '../services/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
- // loggedIn = false;
+
+  // loggedIn = false;
   constructor(private msalservice: MsalService, private broadcastService: BroadcastService,
-              public authservice: AuthService) { }
+    public authservice: AuthService, private service: UmpireService) { }
 
   ngOnInit() {
+    this.service.getColor().subscribe(res => {
+
+      document.getElementsByClassName('bg-secondary')[0]['style'].background = res;
+    });
     // if (!this.authservice.authenticated) {
 
     //   // this.loggedIn = false;
@@ -31,7 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.broadcastService.subscribe('msal:loginSuccess', (payload) => {
     });
     this.subscription = this.broadcastService.subscribe('msal:acquireTokenFailure', (payload) => {
-     this.authservice.signOut();
+      this.authservice.signOut();
     });
   }
   login() {
@@ -39,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   logout() {
     this.authservice.signOut();
-   // this.loggedIn = false;
+    // this.loggedIn = false;
   }
   ngOnDestroy() {
     this.broadcastService.getMSALSubject().next(1);

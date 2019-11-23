@@ -41,6 +41,11 @@ export class UmpireService {
       map((res: any) => res.data)
     );
   }
+  getAllScheduleByUser(emailParam: string): Observable<AddSchedule[]> {
+    return this.baseService.post('Schedule/GetScheduleByEmailAddress?email=' + emailParam, { email: emailParam }).pipe(
+      map((res: any) => res.data)
+    );
+  }
 
   getAllGroupedSchedule(): Observable<any[]> {
     return this.baseService.get('Schedule/GetGroupedSchedule').pipe(
@@ -52,5 +57,22 @@ export class UmpireService {
     return this.baseService.post('Location/GetMapLocationById?id=' + locId, { id: locId });
   }
 
+  getColor() {
+    return this.baseService.get('Home/GetColor');
+  }
+  setColor(col) {
+    return this.baseService.post('Home/SetColor', { color: col });
+  }
+  public getPosition(): Observable<Position> {
+    return Observable.create(
+      (observer) => {
+        navigator.geolocation.watchPosition((pos: Position) => {
+          observer.next(pos);
+        });
+      });
+  }
+  public deleteUmpire(id) {
+    return this.baseService.post('Umpire/DeleteUmpire?umpireId=' + id, { umpireId: id });
+  }
 
 }

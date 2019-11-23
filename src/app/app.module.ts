@@ -11,10 +11,11 @@ import { LandingComponent } from './landing/landing.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 import {
   MatTableModule, MatSelectModule, MatInputModule, MatDatepickerModule,
-  MatNativeDateModule, MatButtonModule, MatCardModule, MatDialog, MatDialogModule
+  MatNativeDateModule, MatButtonModule, MatCardModule, MatDialog, MatDialogModule, MatMenuModule, MatIconModule
 } from '@angular/material';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -26,6 +27,9 @@ import { SignupComponent } from './signup/signup.component';
 import { OAuthSettings } from 'src/oauth';
 import { AddUmpireComponent } from './add-umpire/add-umpire.component';
 import { LocationMapComponent } from './location-map/location-map.component';
+import { SettingsComponent } from './settings/settings.component';
+
+import { ColorPickerModule } from 'ngx-color-picker';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
   console.log('client logging' + message);
@@ -46,7 +50,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     UmpDropdownComponent,
     SignupComponent,
     AddUmpireComponent,
-    LocationMapComponent
+    LocationMapComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,11 +66,15 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatDatepickerModule,
     MatCardModule,
     MatButtonModule,
+    MatMenuModule,
     MatDialogModule,
+    MatIconModule,
     HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA76b1jIoYGeytxeEcRm5cO134WjAsU4Fc'
     }),
+    AgmDirectionModule,
+    ColorPickerModule,
     ToastrModule.forRoot(),
     MsalModule.forRoot({
       clientID: OAuthSettings.appId,

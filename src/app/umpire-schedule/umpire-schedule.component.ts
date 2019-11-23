@@ -50,24 +50,31 @@ export class UmpireScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllSchedule();
+
     const role = this.authservice.getRole();
     if (role) {
       if (role === 'admin') {
+        forkJoin(this.umpService.getUmpires(), this.umpService.getLocation()).subscribe(res => {
+          res[0].unshift({ FirstName: '#select', LastName: 'umpire', ID: 0 });
+          res[1].unshift({ LocationName: '#select location', ID: 0 });
+          this.umpires$ = of(res[0]).pipe(
+            map(r => r.map(v => ({ label: v.FirstName + ' ' + v.LastName, value: v.ID }) as DropdownModel)),
+          );
+          this.locations$ = of(res[1]).pipe(
+            map(r => r.map(v => ({ label: v.LocationName, value: v.ID }) as DropdownModel))
+          );
+        });
+        this.getTimeArray();
+        this.getAllSchedule();
         this.isDisable = false;
-      } else { this.isDisable = true; }
+      } else {
+        this.getAllScheduleByEmail();
+        //  this.getAllScheduleByEmail();
+        this.isDisable = true;
+
+      }
     }
-    forkJoin(this.umpService.getUmpires(), this.umpService.getLocation()).subscribe(res => {
-      res[0].unshift({ FirstName: '#select', LastName: 'umpire', ID: 0 });
-      res[1].unshift({ LocationName: '#select location', ID: 0 });
-      this.umpires$ = of(res[0]).pipe(
-        map(r => r.map(v => ({ label: v.FirstName + ' ' + v.LastName, value: v.ID }) as DropdownModel)),
-      );
-      this.locations$ = of(res[1]).pipe(
-        map(r => r.map(v => ({ label: v.LocationName, value: v.ID }) as DropdownModel))
-      );
-    });
-    this.getTimeArray();
+
 
   }
 
@@ -182,6 +189,13 @@ export class UmpireScheduleComponent implements OnInit {
       }
 
 
+    });
+  }
+
+  getAllScheduleByEmail() {
+    this.umpService.getAllScheduleByUser(this.authservice.getEmail()).subscribe(res => {
+      console.log(res);
+      this.addSchArray = res;
     });
   }
   groupTime(res: Time[]) {

@@ -14,10 +14,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./umpire-info.component.scss']
 })
 export class UmpireInfoComponent implements OnInit {
-  displayedColumns: string[] = ['FirstName', 'LastName', 'PhoneNumber'];
+  displayedColumns: string[] = ['FirstName', 'LastName', 'PhoneNumber', 'Action'];
   umpiresInfo$: Observable<Umpire[]>;
   constructor(private umpireService: UmpireService,
-              private dialog: MatDialog, public authservice: AuthService, private toastr: ToastrService) { }
+    private dialog: MatDialog, public authservice: AuthService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getUmpires();
@@ -36,6 +36,11 @@ export class UmpireInfoComponent implements OnInit {
   getUmpires() {
     this.umpireService.getUmpires().subscribe(res => {
       this.umpiresInfo$ = of(res);
+    });
+  }
+  deleteUmpire(umpire: Umpire) {
+    this.umpireService.deleteUmpire(umpire.ID).subscribe(res => {
+      this.getUmpires();
     });
   }
 }

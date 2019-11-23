@@ -1,70 +1,98 @@
-<div class="row">
+<div class="row" *ngIf="authservice.getRole()=='admin'">
   <div class="col-md-6"></div>
   <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
     <button mat-button color="primary" (click)="addSchedule()">Add Schedule</button>
   </div>
 </div>
-<div class="container-table" *ngFor="let mainForm of scheduleForm ; let z=index;">
-  <form [formGroup]="mainForm">
-    <div class="row">
-      <div class="col-md-12 d-flex justify-content-between">
-        <div class="col-md-6">
-          Date :
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="scheduleDate">
-            <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
-          <button mat-button color="primary" (click)="addRow(z)">Add row</button>
-          <!-- <button mat-button color="accent">Publish schedule</button> -->
+<div *ngIf="authservice.getRole()=='admin'">
+  <div class="container-table" *ngFor="let mainForm of scheduleForm ; let z=index;">
+    <form [formGroup]="mainForm">
+      <div class="row">
+        <div class="col-md-12 d-flex justify-content-between">
+          <div class="col-md-6">
+            Date :
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="scheduleDate"
+                [disabled]="mainForm.value.scheduleDate?true:false">
+              <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
+            <button mat-button color="primary" (click)="addRow(z)">Add row</button>
+            <!-- <button mat-button color="accent">Publish schedule</button> -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <table class="table table-sm">
+      <table class="table table-sm">
 
-      <thead class="thead-dark ">
-        <tr>
-          <th>Time</th>
-          <th scope="col" formArrayName="locations"
-            *ngFor="let item of mainForm.get('locations')['controls']; let x=index">
-            <div [formGroupName]="x">
-              <app-ump-dropdown [disable]="true" formControlName="location" *ngIf="isDisable && locations$"
-                [ddModel]="locations$" [selected]="0">
-              </app-ump-dropdown>
-              <app-ump-dropdown  [disable]="mainForm.value.locations[x].location > 0?true:false"
-                formControlName="location" *ngIf="locations$" [ddModel]="!isDisable && locations$" [selected]="0">
-              </app-ump-dropdown>
-              <a [routerLink]="['/location-map',mainForm.value.locations[x].location]" target="_blank"> <i class="fas fa-map-marker-alt"></i></a>
-            </div>
+        <thead class="thead-dark ">
+          <tr>
+            <th>Time</th>
+            <th scope="col" formArrayName="locations"
+              *ngFor="let item of mainForm.get('locations')['controls']; let x=index">
+              <div [formGroupName]="x">
+                <app-ump-dropdown [disable]="true" formControlName="location" *ngIf="isDisable && locations$"
+                  [ddModel]="locations$" [selected]="0">
+                </app-ump-dropdown>
+                <app-ump-dropdown [disable]="mainForm.value.locations[x].location > 0?true:false"
+                  formControlName="location" *ngIf="locations$" [ddModel]="!isDisable && locations$" [selected]="0">
+                </app-ump-dropdown>
+                <a [routerLink]="['/location-map',mainForm.value.locations[x].location]"> <i
+                    class="fas fa-map-marker-alt"></i></a>
+              </div>
 
-          </th>
-        </tr>
-      </thead>
-      <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime')['controls']; let x=index">
-        <tr [formGroupName]="x">
-          <td>
-            <app-ump-dropdown  [disable]="true" formControlName="schTime" *ngIf="isDisable && timeArray$"
-              [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
-            <app-ump-dropdown  [disable]="item.value.schTime?true:false" formControlName="schTime" *ngIf=" !isDisable && timeArray$"
-              [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
-          </td>
-          <td formArrayName="lu" contenteditable="true" *ngFor="let header of  item.get('lu').controls ; let j=index;">
-            <div [formGroupName]="j">
-              <app-ump-dropdown  [disable]="true" formControlName="umpire" *ngIf="isDisable && umpires$"
-                [ddModel]="umpires$" [selected]="0"
-                (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
-              </app-ump-dropdown>
-              <app-ump-dropdown  [disable]="false" formControlName="umpire" *ngIf="!isDisable && umpires$"
-                [ddModel]="umpires$" [selected]="0"
-                (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
-              </app-ump-dropdown>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
+            </th>
+          </tr>
+        </thead>
+        <tbody formArrayName="scheduleTime" *ngFor="let item of mainForm.get('scheduleTime')['controls']; let x=index">
+          <tr [formGroupName]="x">
+            <td>
+              <app-ump-dropdown [disable]="true" formControlName="schTime" *ngIf="isDisable && timeArray$"
+                [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
+              <app-ump-dropdown [disable]="item.value.schTime?true:false" formControlName="schTime"
+                *ngIf=" !isDisable && timeArray$" [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
+            </td>
+            <td formArrayName="lu" contenteditable="true"
+              *ngFor="let header of  item.get('lu').controls ; let j=index;">
+              <div [formGroupName]="j">
+                <app-ump-dropdown [disable]="true" formControlName="umpire" *ngIf="isDisable && umpires$"
+                  [ddModel]="umpires$" [selected]="0"
+                  (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
+                </app-ump-dropdown>
+                <app-ump-dropdown [disable]="false" formControlName="umpire" *ngIf="!isDisable && umpires$"
+                  [ddModel]="umpires$" [selected]="0"
+                  (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate, mainForm.value.locations[j].location)">
+                </app-ump-dropdown>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+
+<div class="container-table" style="width:50%;">
+  <h5>My Schedule</h5>
+  <table class="table table-sm" *ngIf="authservice.getRole()=='umpire'">
+    <thead class="thead-dark ">
+      <tr>
+        <th>Date</th>
+        <th>TIme</th>
+        <th>Location</th>
+        <th>Umpire</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sch of addSchArray">
+        <td>{{sch.ScheduleDate | date}}</td>
+        <td>{{sch.ScheduleTime}}</td>
+        <td>{{sch.LocationName}} <a [routerLink]="['/location-map',sch.LocationID]"> <i
+              class="fas fa-map-marker-alt"></i></a></td>
+        <td>{{sch.UmpireFirstName}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
