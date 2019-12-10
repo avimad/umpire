@@ -159,7 +159,7 @@ mrityuDate : Date;
           debugger;
           this.mrityuDate= new Date(ele.ScheduleDate);
       
-          console.log('here',this.mrityuDate.setMinutes(this.mrityuDate.getMinutes()+this.mrityuDate.getTimezoneOffset()));
+          
           this.mainForm.controls.scheduleDate.setValue(new Date(ele.ScheduleDate));
             
           const timeArray = this.mainForm.get('scheduleTime') as FormArray;
