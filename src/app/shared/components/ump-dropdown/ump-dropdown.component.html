@@ -1,0 +1,5 @@
+<select [formControl]="dropControl" (change)="getSelected(dropControl)">
+    <option *ngFor="let model of ddModel | async" [value]="model.value">
+        {{model.label}}
+    </option>
+</select>

@@ -1,0 +1,7 @@
+
+<agm-map [latitude]="origin.lat" [longitude]="origin.lng"
+    [zoomControl]="true" *ngIf="destination">
+    <!-- <agm-marker [latitude]="res.latitude" [longitude]="res.longitude"></agm-marker> -->
+    <agm-direction [origin]="origin" [destination]="destination">
+    </agm-direction>
+</agm-map>

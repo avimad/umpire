@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "testproject-c353d": {
+      "hosting": {
+        "umpireSchedule": [
+          "testproject-c353d"
+        ]
+      }
+    }
+  }
+}

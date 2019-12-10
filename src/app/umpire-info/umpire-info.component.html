@@ -1,0 +1,36 @@
+<div class="container content-wrapper">
+    <h3>Umpires Information</h3>
+    <button *ngIf="authservice.getRole()=='admin'" mat-raised-button color="primary" (click)="openAddUmpire()"
+        type="button">
+        Add Umpire</button>
+    <!-- <mat-form-field>
+        <input matInput placeholder="Filter">
+        
+    </mat-form-field> -->
+    <table mat-table [dataSource]="umpiresInfo$" class="mat-elevation-z8">
+        <ng-container matColumnDef="FirstName">
+            <th mat-header-cell *matHeaderCellDef> First Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.FirstName}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="LastName">
+            <th mat-header-cell *matHeaderCellDef> Last Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.LastName}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="PhoneNumber">
+            <th mat-header-cell *matHeaderCellDef> Contact </th>
+            <td mat-cell *matCellDef="let element"> {{element.PhoneNumber}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action" *ngIf="authservice.getRole()=='admin'">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element"> <a (click)="deleteUmpire(element)"><i class="fas fa-trash"></i> </a></td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+</div>

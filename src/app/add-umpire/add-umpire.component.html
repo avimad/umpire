@@ -1,0 +1,54 @@
+<mat-card>
+    <mat-card-title>
+        <h5> Add Umpire</h5>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-md-12">
+
+                <form [formGroup]="umpireForm" (ngSubmit)="submit()" class="signup-form">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="First Name" formControlName="firstname">
+                        <mat-error *ngIf="umpireForm.controls.firstname.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Last Name" formControlName="lastname">
+                        <mat-error *ngIf="umpireForm.controls.lastname.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="User Name" formControlName="username">
+                        <mat-error *ngIf="umpireForm.controls.username.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Email" formControlName="email">
+                        <mat-error
+                            *ngIf="umpireForm.controls.email.hasError('email') && !umpireForm.controls.email.hasError('required')">
+                            Please enter a valid email address
+                        </mat-error>
+                        <mat-error *ngIf="umpireForm.controls.email.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Phone No." formControlName="phoneno">
+                        <mat-error *ngIf="umpireForm.controls.phoneno.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" [disabled]="umpireForm.invalid" type="submit">
+                        Add</button>
+                </form>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
