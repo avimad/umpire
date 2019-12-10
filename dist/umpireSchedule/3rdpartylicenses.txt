@@ -122,6 +122,8 @@ THE SOFTWARE.
 
 @angular/material/menu
 
+@angular/material/progress-spinner
+
 @angular/material/table
 
 @angular/platform-browser

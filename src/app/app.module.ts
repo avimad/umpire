@@ -15,7 +15,7 @@ import { AgmDirectionModule } from 'agm-direction';
 
 import {
   MatTableModule, MatSelectModule, MatInputModule, MatDatepickerModule,
-  MatNativeDateModule, MatButtonModule, MatCardModule, MatDialog, MatDialogModule, MatMenuModule, MatIconModule
+  MatNativeDateModule, MatButtonModule, MatCardModule, MatDialog, MatDialogModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule
 } from '@angular/material';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -30,6 +30,7 @@ import { LocationMapComponent } from './location-map/location-map.component';
 import { SettingsComponent } from './settings/settings.component';
 
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
   console.log('client logging' + message);
@@ -51,7 +52,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     SignupComponent,
     AddUmpireComponent,
     LocationMapComponent,
-    SettingsComponent
+    SettingsComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +71,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatMenuModule,
     MatDialogModule,
     MatIconModule,
+    MatProgressSpinnerModule,
+
     HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA76b1jIoYGeytxeEcRm5cO134WjAsU4Fc'
@@ -105,7 +109,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     }
   ],
   entryComponents: [
-    AddUmpireComponent
+    AddUmpireComponent, ConfirmationComponent
   ],
   bootstrap: [AppComponent]
 })

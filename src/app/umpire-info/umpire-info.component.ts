@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material';
 import { AddUmpireComponent } from '../add-umpire/add-umpire.component';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: 'app-umpire-info',
@@ -14,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./umpire-info.component.scss']
 })
 export class UmpireInfoComponent implements OnInit {
-  displayedColumns: string[] = ['FirstName', 'LastName', 'PhoneNumber', 'Action'];
+  displayedColumns: string[];
   umpiresInfo$: Observable<Umpire[]>;
   constructor(private umpireService: UmpireService,
     private dialog: MatDialog, public authservice: AuthService, private toastr: ToastrService) { }
@@ -35,12 +36,24 @@ export class UmpireInfoComponent implements OnInit {
   }
   getUmpires() {
     this.umpireService.getUmpires().subscribe(res => {
+      if (this.authservice.getRole() === 'admin') {
+       this.displayedColumns = ['FirstName', 'LastName', 'PhoneNumber', 'Action'];
+      } else {
+        this.displayedColumns = ['FirstName', 'LastName', 'PhoneNumber'];
+      }
       this.umpiresInfo$ = of(res);
     });
   }
   deleteUmpire(umpire: Umpire) {
-    this.umpireService.deleteUmpire(umpire.ID).subscribe(res => {
-      this.getUmpires();
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '200px'
+    }).afterClosed().subscribe(res => {
+      if (res === 'save') {
+        this.umpireService.deleteUmpire(umpire.ID).subscribe(res => {
+          this.getUmpires();
+        });
+      }
     });
+
   }
 }

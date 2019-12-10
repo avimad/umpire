@@ -9,6 +9,8 @@ import { AuthService } from '../services/auth.service';
 import { MatDialog } from '@angular/material';
 import { LocationMapComponent } from '../location-map/location-map.component';
 import { Router } from '@angular/router';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-umpire-schedule',
@@ -40,9 +42,11 @@ export class UmpireScheduleComponent implements OnInit {
   schedules: Schedule[] = [];
   schedule: Schedule = {};
 
+  isLoading = false;
+
 
   constructor(private umpService: UmpireService, private fb: FormBuilder, public authservice: AuthService,
-    private dilaog: MatDialog, private router: Router) {
+    private dilaog: MatDialog, private router: Router, public dialog: MatDialog, private toastr: ToastrService) {
     this.createForm();
     this.locationHeaders = of(Array(12).fill(0).map((x, i) => i));
     this.arrayItems = of(Array(2).fill(0).map((x, i) => i));
@@ -129,6 +133,7 @@ export class UmpireScheduleComponent implements OnInit {
   }
 
   getAllSchedule() {
+    this.isLoading = true;
     this.umpService.getAllSchedule().subscribe(res => {
       if (res.length > 0) {
         // tslint:disable-next-line:no-string-literal
@@ -151,7 +156,6 @@ export class UmpireScheduleComponent implements OnInit {
             this.groupLocation(sched.schtime);
             //  this.schedule.schtime.push();
             this.schedules.push(this.schedule);
-            console.log(this.schedules);
 
           });
         this.schedules.forEach((ele, i) => {
@@ -181,20 +185,20 @@ export class UmpireScheduleComponent implements OnInit {
             });
 
           });
-          console.log(this.mainForm);
           this.scheduleForm.push(this.mainForm);
         });
       } else {
         this.scheduleForm.push(this.mainForm);
       }
-
+      this.isLoading = false;
 
     });
   }
 
   getAllScheduleByEmail() {
-    this.umpService.getAllScheduleByUser(this.authservice.getEmail()).subscribe(res => {
-      console.log(res);
+    this.isLoading = true;
+    this.umpService.getAllScheduleByUser(this.authservice.getUserName()).subscribe(res => {
+      this.isLoading = false;
       this.addSchArray = res;
     });
   }
@@ -239,15 +243,23 @@ export class UmpireScheduleComponent implements OnInit {
     // this.addSch.LocationID = Number(e);
   }
   selectedUmpire(time, umpire, date, location) {
-    console.log(time, umpire, date, location);
 
     if (time && umpire && date && location) {
-      this.addSch.ScheduleDate = date;
-      this.addSch.UmpireID = umpire;
-      this.addSch.LocationID = location;
-      this.addSch.ScheduleTime = time;
-      this.umpService.addSchedule(this.addSch).subscribe(res => {
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '200px'
+      }).afterClosed().subscribe(res => {
+        if (res === 'save') {
+          this.addSch.ScheduleDate = date;
+          this.addSch.UmpireID = umpire;
+          this.addSch.LocationID = location;
+          this.addSch.ScheduleTime = time;
+          this.umpService.addSchedule(this.addSch).subscribe(() => {
+            this.toastr.success('Umpire updated successfully');
+
+          });
+        }
       });
+
     }
 
 

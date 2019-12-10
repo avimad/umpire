@@ -22,6 +22,13 @@
                     </mat-form-field>
 
                     <mat-form-field class="example-full-width">
+                        <input matInput placeholder="User Name" formControlName="username">
+                        <mat-error *ngIf="umpireForm.controls.username.hasError('required')">
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
                         <input matInput placeholder="Email" formControlName="email">
                         <mat-error
                             *ngIf="umpireForm.controls.email.hasError('email') && !umpireForm.controls.email.hasError('required')">

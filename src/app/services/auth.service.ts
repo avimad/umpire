@@ -84,7 +84,7 @@ export class AuthService {
     this.userInfo.Email = graphUser.userPrincipalName;
     this.userInfo.Role = graphUser.jobTitle;
     localStorage.setItem('userRole', this.userInfo.Role.toLowerCase());
-    localStorage.setItem('userName', this.userInfo.Name);
+    localStorage.setItem('userName', graphUser.displayName);
     localStorage.setItem('email', this.userInfo.Email);
     // user.displayName = graphUser.displayName;
     // Prefer the mail property, but fall back to userPrincipalName

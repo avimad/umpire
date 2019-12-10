@@ -63,6 +63,9 @@ export class UmpireService {
   setColor(col) {
     return this.baseService.post('Home/SetColor', { color: col });
   }
+  getFiles() {
+    return this.baseService.get('Home/ListFiles');
+  }
   public getPosition(): Observable<Position> {
     return Observable.create(
       (observer) => {

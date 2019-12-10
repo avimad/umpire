@@ -14,14 +14,15 @@ export class AddUmpireComponent implements OnInit {
   umpire: Umpire = {};
 
   constructor(private fb: FormBuilder, private umpservice: UmpireService,
-              private dialogRef: MatDialogRef<AddUmpireComponent>) { }
+    private dialogRef: MatDialogRef<AddUmpireComponent>) { }
 
   ngOnInit() {
     this.umpireForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phoneno: ['', [Validators.required]]
+      phoneno: ['', [Validators.required]],
+      username: ['', [Validators.required]]
     });
   }
   submit() {
@@ -30,6 +31,7 @@ export class AddUmpireComponent implements OnInit {
       this.umpire.LastName = this.umpireForm.value.lastname;
       this.umpire.PhoneNumber = this.umpireForm.value.phoneno;
       this.umpire.EmailAddress = this.umpireForm.value.email;
+      this.umpire.UserName = this.umpireForm.value.username;
       this.umpire.UserType = 'umpire';
 
       this.umpservice.addUmpire(this.umpire).subscribe(res => {
