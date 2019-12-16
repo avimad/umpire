@@ -77,5 +77,8 @@ export class UmpireService {
   public deleteUmpire(id) {
     return this.baseService.post('Umpire/DeleteUmpire?umpireId=' + id, { umpireId: id });
   }
+  public uploadpic(data) {
+    return this.baseService.post('/', data);
+  }
 
 }

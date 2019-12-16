@@ -1,10 +1,28 @@
 <mat-card>
   <mat-card-title>Set theme </mat-card-title>
-    <div class="row">
-        <div class="col-md-5">
-          <input [value]="color2" [style.background]="color2" [(colorPicker)]="color2" (colorPickerChange)="changeColor($event)"/>
+  <div class="row">
+    <div class="col-md-5">
+      <input [value]="color2" [style.background]="color2" [(colorPicker)]="color2"
+        (colorPickerChange)="changeColor($event)" />
 
-          <button mat-raised-button color="primary" (click)="saveColor()">Save</button>
-        </div>
-      </div>
+      <button mat-raised-button color="primary" (click)="saveColor()">Save</button>
+    </div>
+  </div>
+
+  <h5>Boca Raton Little League</h5>
+  <input #file type="file" (change)="upload($event.target.files,'bocaraton')" />
+  <h5>CDC Heads-Up Program</h5>
+  <input #file type="file" (change)="upload($event.target.files,'cdc')" />
+  <h5>Delray Beach Little League</h5>
+  <input #file type="file" (change)="upload($event.target.files,derlay)" />
+  <h5>Little League Baseball</h5>
+  <input #file type="file" (change)="upload($event.target.files, llb)" />
+  <h5>East Boynton Beach Little League</h5>
+  <input #file type="file" (change)="upload($event.target.files, ebb)" />
+  <h5> USA Approved Bat List</h5>
+  <input #file type="file" (change)="upload($event.target.files,usaa)" />
+  <h5> West Boynton Beach Little League</h5>
+  <input #file type="file" (change)="upload($event.target.files,wbb)" />
+  <h5> Back Ground</h5>
+  <input #file type="file" (change)="upload($event.target.files,bg)" />
 </mat-card>
