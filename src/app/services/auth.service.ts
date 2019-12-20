@@ -78,13 +78,13 @@ export class AuthService {
 
     // Get the user from Graph (GET /me)
     const graphUser = await graphClient.api('/me').get().catch((err) => console.log(err));
-    console.log('graphUser', graphUser);
+   // console.log('graphUser', graphUser);
     this.userInfo = {};
     this.userInfo.Name = graphUser.givenName;
     this.userInfo.Email = graphUser.userPrincipalName;
     this.userInfo.Role = graphUser.jobTitle;
     localStorage.setItem('userRole', this.userInfo.Role.toLowerCase());
-    localStorage.setItem('userName', graphUser.displayName);
+    localStorage.setItem('userName', graphUser.userPrincipalName);
     localStorage.setItem('email', this.userInfo.Email);
     // user.displayName = graphUser.displayName;
     // Prefer the mail property, but fall back to userPrincipalName

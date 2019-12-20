@@ -9,13 +9,26 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SettingsComponent implements OnInit {
   color2: any;
+  selectedFile: File;
+  imageType: string;
   constructor(private service: UmpireService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.service.getColor().subscribe(res => {
       this.color2 = res;
     });
+    this.imageType="Image Type";
   }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
+  imageTypeChangeHandler(event)
+  {
+    this.imageType = event.target.value;
+
+  }
+
   changeColor(e) {
     this.color2 = e;
 
@@ -25,21 +38,24 @@ export class SettingsComponent implements OnInit {
       document.getElementsByClassName('bg-secondary')[0]['style'].background = this.color2;
     });
   }
-  upload(files, name) {
-    console.log(files);
-    if (files.length === 0) {
-      return;
+  upload() {
+    if (this.selectedFile.size === 0) {
+      return this.toastr.error('Select Image');
+    }
+    debugger;
+    if(this.imageType=="NotSelected" || this.imageType=="Image Type")
+    {
+      
+     return this.toastr.error('Select Image Type');
+       
     }
     const formData = new FormData();
-
-    for (const file of files) {
-      formData.append(name, file, file.name);
-    }
-    console.log(formData);
+    //console.log("Image Type",this.imageType);
+    formData.append(this.imageType, this.selectedFile, this.selectedFile.name);
     this.service.uploadpic(formData).subscribe(() => {
-      this.toastr.success('logo updated');
+      this.toastr.success('Image Uploaded');
     }, err => {
-     this.toastr.error('Error');
+     this.toastr.error('Error! Please Try Again');
     });
   }
 }

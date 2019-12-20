@@ -8,8 +8,42 @@
       <button mat-raised-button color="primary" (click)="saveColor()">Save</button>
     </div>
   </div>
+</mat-card>
 
-  <h5>Boca Raton Little League</h5>
+<mat-card>
+    <mat-card-title>Upload Files</mat-card-title>
+  <table>
+    <tr>
+      <th>Image Type</th>
+      <th>Select File</th>
+    </tr>
+    <tr>
+      <td>
+        <select name="demo" id="ddlImageType" (change)="imageTypeChangeHandler($event)">
+          <option selected="selected" value="NotSelected">Image Type</option>
+          <option value="BackGround">BackGround Image</option>
+          <option value="ForeGround">ForeGround Image</option>
+          <option value="Logo">Logo Image</option>
+          </select>
+
+      </td>
+      <td> <input #file type="file" (change)="onFileChanged($event)" />
+        <button (click)="upload()">Upload</button>
+      </td>
+    </tr>
+  </table>
+</mat-card>
+
+
+
+
+
+
+
+
+
+
+  <!-- <h5>Boca Raton Little League</h5>
   <input #file type="file" (change)="upload($event.target.files,'bocaraton')" />
   <h5>CDC Heads-Up Program</h5>
   <input #file type="file" (change)="upload($event.target.files,'cdc')" />
@@ -24,5 +58,4 @@
   <h5> West Boynton Beach Little League</h5>
   <input #file type="file" (change)="upload($event.target.files,wbb)" />
   <h5> Back Ground</h5>
-  <input #file type="file" (change)="upload($event.target.files,bg)" />
-</mat-card>
+  <input #file type="file" (change)="upload($event.target.files,bg)" /> -->

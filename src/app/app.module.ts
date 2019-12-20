@@ -33,7 +33,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 export function loggerCallback(logLevel, message, piiEnabled) {
-  console.log('client logging' + message);
+  // console.log('client logging' + message);
 }
 
 export const protectedResourceMap: [string, string[]][] = [['',

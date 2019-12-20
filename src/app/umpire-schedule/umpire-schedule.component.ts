@@ -181,7 +181,7 @@ export class UmpireScheduleComponent implements OnInit {
             elem.schUmpire.forEach((el, k) => {
               this.createUmpireForm();
               this.umpireForm.controls.umpire.setValue(el.UmpireID);
-              umpireArray.controls[k] = this.umpireForm;
+              umpireArray.controls[this.schedules[i].location.findIndex(loc=>loc=== parseInt(el.LocationID))] = this.umpireForm;
             });
 
           });

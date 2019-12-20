@@ -24,6 +24,7 @@ export class BaseApiService {
   }
 
   post<T>(url: string, body: {}): Observable<T> {
+    debugger;
     const token = localStorage.getItem('token');
     const customHeaders = new HttpHeaders({
       [this.authorization]: `Bearer ${token}`,
