@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UmpireService } from '../services/umpire.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { AuthService } from '../services/auth.service';
+import { Routes, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -11,7 +12,7 @@ export class SettingsComponent implements OnInit {
   color2: any;
   selectedFile: File;
   imageType: string;
-  constructor(private service: UmpireService, private toastr: ToastrService) { }
+  constructor(private service: UmpireService, private toastr: ToastrService,private authService:AuthService) { }
 
   ngOnInit() {
     this.service.getColor().subscribe(res => {
@@ -25,8 +26,9 @@ export class SettingsComponent implements OnInit {
   }
   imageTypeChangeHandler(event)
   {
+  
     this.imageType = event.target.value;
-
+console.log(this.imageType)
   }
 
   changeColor(e) {
@@ -50,7 +52,7 @@ export class SettingsComponent implements OnInit {
        
     }
     const formData = new FormData();
-    //console.log("Image Type",this.imageType);
+    console.log(this.imageType)
     formData.append(this.imageType, this.selectedFile, this.selectedFile.name);
     this.service.uploadpic(formData).subscribe(() => {
       this.toastr.success('Image Uploaded');

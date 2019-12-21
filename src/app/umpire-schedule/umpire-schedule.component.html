@@ -1,5 +1,5 @@
 
-<mat-spinner *ngIf="isLoading">
+<mat-spinner class="loader" *ngIf="isLoading">
 </mat-spinner>
 <div *ngIf="!isLoading">
   <div class="row" *ngIf="authservice.getRole()=='admin'">
@@ -85,7 +85,7 @@
       <thead class="thead-dark ">
         <tr>
           <th>Date</th>
-          <th>TIme</th>
+          <th>Time</th>
           <th>Location</th>
           <th>Umpire</th>
         </tr>

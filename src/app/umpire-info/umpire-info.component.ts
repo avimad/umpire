@@ -37,7 +37,7 @@ export class UmpireInfoComponent implements OnInit {
   getUmpires() {
     this.umpireService.getUmpires().subscribe(res => {
       if (this.authservice.getRole() === 'admin') {
-       this.displayedColumns = ['FirstName', 'LastName', 'PhoneNumber', 'Action'];
+       this.displayedColumns = ['FirstName', 'LastName', 'PhoneNumber','EmailAddress','UserName', 'Action'];
       } else {
         this.displayedColumns = ['FirstName', 'LastName', 'PhoneNumber'];
       }

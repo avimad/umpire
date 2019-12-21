@@ -80,7 +80,8 @@ export class AuthService {
     const graphUser = await graphClient.api('/me').get().catch((err) => console.log(err));
    // console.log('graphUser', graphUser);
     this.userInfo = {};
-    this.userInfo.Name = graphUser.givenName;
+    //this.userInfo.Name = graphUser.givenName;
+    console.log(graphUser);
     this.userInfo.Email = graphUser.userPrincipalName;
     this.userInfo.Role = graphUser.jobTitle;
     localStorage.setItem('userRole', this.userInfo.Role.toLowerCase());

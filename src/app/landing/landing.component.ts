@@ -19,7 +19,7 @@ export class LandingComponent implements OnInit {
   ll1 = '';
   ub1 = '';
   wbb1 = '';
-  testStyle:string;
+  
   ngOnInit() {
     this.service.getFiles().subscribe(res => {
      
@@ -32,8 +32,9 @@ export class LandingComponent implements OnInit {
       this.ll1 = 'data:image/png;base64,' + res['ll1.jpg'];
       this.ub1 = 'data:image/png;base64,' + res['ub1.png'];
       this.wbb1 = 'data:image/png;base64,' + res['wbb1.png'];
-      this.testStyle="background:url("+this.makeTrustedImage(this.bb)+")";
-     // console.log(res['East Boynton Little League.png']);
+      
+    
+    
     });
   }
   makeTrustedImage(item) {
@@ -43,7 +44,5 @@ export class LandingComponent implements OnInit {
    
     return this.sanitizer.bypassSecurityTrustUrl(style);
   }
-  myStyle(): any {
-    return this.testStyle; //{"background-image":"url('"+this.makeTrustedImage(this.bb)+"')"};
-  } 
+ 
 }

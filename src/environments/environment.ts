@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:50262/api/',//'http://sflumpsapi.azurewebsites.net/api/',
-  redirectUri: 'http://localhost:4200/'
+  baseUrl: 'https://sflumpsapi-stage.azurewebsites.net/api/',
+  //Local: 'http://localhost:50262/api/'    Stage:http://sflumpsapi-stage.azurewebsites.net/api/   Normal:http://sflumpsapi.azurewebsites.net/api/  ,
+  redirectUri: 'http://localhost:4200/'//'https://sflumps-stage.azurewebsites.net/'
 
 };
 

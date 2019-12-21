@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'umpire-schedule', component: UmpireScheduleComponent, canActivate: [MsalGuard] },
   { path: 'location-map/:id', component: LocationMapComponent,  canActivate: [MsalGuard] },
   { path: 'sign-up', component: SignupComponent },
-  { path: 'settings', component: SettingsComponent }
+  { path: 'settings', component: SettingsComponent,  canActivate: [MsalGuard] }
 ];
 
 @NgModule({

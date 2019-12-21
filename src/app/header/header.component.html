@@ -28,7 +28,7 @@
                     (click)="login()">Login</button>
                 <button mat-raised-button [matMenuTriggerFor]="menu" *ngIf="authservice.authenticated">Welcome, {{authservice.userInfo?.Name}}</button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item [routerLink]="['/settings']">Settings</button>
+                    <button mat-menu-item *ngIf="authservice.getRole()=='admin'" [routerLink]="['/settings']">Settings</button>
                     <button mat-menu-item (click)="logout()">Logout</button>
 
                 </mat-menu>
