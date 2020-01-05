@@ -32,6 +32,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
+import {MatRadioModule} from '@angular/material/radio'
 export function loggerCallback(logLevel, message, piiEnabled) {
   // console.log('client logging' + message);
 }
@@ -72,6 +73,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
 
     HttpClientModule,
     AgmCoreModule.forRoot({

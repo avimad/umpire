@@ -86,6 +86,8 @@ export class UmpireScheduleComponent implements OnInit {
   createForm() {
     this.mainForm = this.fb.group({
       scheduleDate: ['', Validators.required],
+      description: [''],
+      scheduleDay: [''],
       locations: this.fb.array([this.createLocationForm()]),
       scheduleTime: this.fb.array([])
     });
@@ -126,7 +128,9 @@ export class UmpireScheduleComponent implements OnInit {
   }
   createUmpireForm() {
     this.umpireForm = this.fb.group({
-      umpire: ['0', Validators.required]
+      umpire: ['0', Validators.required],
+      IsRainedOut: ['false'],
+      umpireStatus: [0]
     });
 
     return this.umpireForm;
@@ -152,15 +156,22 @@ export class UmpireScheduleComponent implements OnInit {
             this.schedule.schtime = [];
             this.schedule.location = [];
             this.schedule.ScheduleDate = sched.ScheduleDate;
+            this.schedule.ScheduleDay = new Date(sched.ScheduleDate).getDay();
+            this.schedule.Description = sched.schtime[0]['Description'];
+            console.log(new Date(this.schedule.ScheduleDate).getDay());
             this.groupTime(sched.schtime);
             this.groupLocation(sched.schtime);
             //  this.schedule.schtime.push();
             this.schedules.push(this.schedule);
+            console.log(this.schedules);
 
           });
         this.schedules.forEach((ele, i) => {
           this.createForm();
           this.mainForm.controls.scheduleDate.setValue(new Date(this.schedules[i].ScheduleDate));
+          this.mainForm.controls.description.setValue(this.schedules[i].Description);
+          this.mainForm.controls.scheduleDay.setValue(this.schedules[i].ScheduleDay);
+          console.log('desc', this.schedules[i].Description);
 
           const timeArray = this.mainForm.get('scheduleTime') as FormArray;
           const locationArray = this.mainForm.get('locations') as FormArray;
@@ -172,6 +183,7 @@ export class UmpireScheduleComponent implements OnInit {
           // timeArray.removeAt(0);
           this.schedules[i].schtime.forEach((elem, j) => {
             this.createTimeForm();
+            console.log('xxx', elem);
             const umpireArray = this.timeForm.get('lu') as FormArray;
 
             this.timeForm.controls.schTime.setValue(elem.ScheduleTime);
@@ -181,7 +193,9 @@ export class UmpireScheduleComponent implements OnInit {
             elem.schUmpire.forEach((el, k) => {
               this.createUmpireForm();
               this.umpireForm.controls.umpire.setValue(el.UmpireID);
-              umpireArray.controls[this.schedules[i].location.findIndex(loc=>loc=== parseInt(el.LocationID))] = this.umpireForm;
+              this.umpireForm.controls.IsRainedOut.setValue(el['IsRainedOut']);
+              this.umpireForm.controls.umpireStatus.setValue(el['UmpireStatus']);
+              umpireArray.controls[this.schedules[i].location.findIndex(loc => loc === parseInt(el.LocationID))] = this.umpireForm;
             });
 
           });
@@ -242,7 +256,7 @@ export class UmpireScheduleComponent implements OnInit {
 
     // this.addSch.LocationID = Number(e);
   }
-  selectedUmpire(time, umpire, date, location) {
+  selectedUmpire(time, umpire, date, desc, location) {
 
     if (time && umpire && date && location) {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -253,6 +267,8 @@ export class UmpireScheduleComponent implements OnInit {
           this.addSch.UmpireID = umpire;
           this.addSch.LocationID = location;
           this.addSch.ScheduleTime = time;
+          this.addSch.Description = desc;
+          this.addSch.IsRainedOut = false;
           this.umpService.addSchedule(this.addSch).subscribe(() => {
             this.toastr.success('Umpire updated successfully');
 
@@ -264,6 +280,28 @@ export class UmpireScheduleComponent implements OnInit {
 
 
   }
+  rainedOut(time, umpire, date, desc, location) {
+
+    if (time && umpire && date && location) {
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '200px'
+      }).afterClosed().subscribe(res => {
+        if (res === 'save') {
+          this.addSch.ScheduleDate = date;
+          this.addSch.UmpireID = umpire;
+          this.addSch.LocationID = location;
+          this.addSch.ScheduleTime = time;
+          this.addSch.Description = desc;
+          this.addSch.IsRainedOut = true;
+          this.umpService.addSchedule(this.addSch).subscribe(() => {
+            this.toastr.success('Rained Out');
+
+          });
+        }
+      });
+
+    }
+  }
   selectedTime(e, x) {
     // this.mainForm.get('scheduleTime')[0]['schTime'].va
     // this.addSch.ScheduleTime = e;
@@ -271,7 +309,7 @@ export class UmpireScheduleComponent implements OnInit {
 
   addSchedule() {
     this.createForm();
-    this.scheduleForm.push(this.mainForm);
+    this.scheduleForm.unshift(this.mainForm);
   }
   dateChanged(e) {
     // this.addSch.ScheduleDate = e.value;
@@ -314,7 +352,10 @@ export class UmpireScheduleComponent implements OnInit {
   get lu() {
     return this.timeForm.get('lu') as FormArray;
   }
-
+  changeStatus(sch, e) {
+    console.log(sch.Id, e.value);
+    this.umpService.updateStatus({ ScheduleId: sch.ID, Status: e.value }).subscribe();
+  }
 
   loc(e) {
     this.router.navigate(['location-map', e]);

@@ -52,6 +52,11 @@ export class UmpireService {
       map((res: any) => res.data)
     );
   }
+  updateStatus(data) {
+    return this.baseService.post('Schedule/ComfirmOrDenyByScheduleID', data).pipe(
+      map((res: any) => res.data)
+    );
+  }
 
   getLocationById(locId) {
     return this.baseService.post('Location/GetMapLocationById?id=' + locId, { id: locId });

@@ -7,10 +7,16 @@ export interface AddSchedule {
     UmpireID?: number;
     TeamID?: number;
     LocationID?: number;
+    Description?: string;
+    IsRainedOut?: boolean;
 }
 
 export interface Schedule {
     ScheduleDate?: string;
+    ScheduleDay?: number;
+    Description?: string;
+    IsRainedOut?: boolean;
+    umpireStatus?: number;
     schtime?: Time[];
     location?: number[];
 
