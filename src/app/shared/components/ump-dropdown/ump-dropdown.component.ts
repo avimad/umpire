@@ -20,6 +20,7 @@ export class UmpDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() ddModel: Observable<DropdownModel[]>;
   @Input() selected: number;
   @Input() disable = false;
+  @Input() isSat = 0;
 
   @Output() selectOption = new EventEmitter<DropdownModel>();
   private onChange;

@@ -9,6 +9,7 @@ export interface AddSchedule {
     LocationID?: number;
     Description?: string;
     IsRainedOut?: boolean;
+    UmpireStatus?: number;
 }
 
 export interface Schedule {

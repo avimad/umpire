@@ -1,4 +1,5 @@
-<select [formControl]="dropControl" (change)="getSelected(dropControl)">
+<select [formControl]="dropControl" (change)="getSelected(dropControl)" [ngClass]="{'satText':isSat===6}">
+    {{isSat}}
     <option *ngFor="let model of ddModel | async" [value]="model.value">
         {{model.label}}
     </option>

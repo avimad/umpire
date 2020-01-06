@@ -316,6 +316,18 @@ export class UmpireScheduleComponent implements OnInit {
   }
 
 
+  IsRainted(IsRained, IsCanceled) {
+    console.log('test', IsRained, IsCanceled);
+    if (IsRained === true) {
+      return 'skyblue';
+    }
+    else if (IsCanceled === 2) {
+
+      return 'red';
+    }
+  }
+
+
   addRow(index) {
     const timeArray = this.scheduleForm[index].get('scheduleTime') as FormArray;
     timeArray.push(this.createTimeForm());

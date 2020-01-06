@@ -1,4 +1,3 @@
-
 <mat-spinner class="loader" *ngIf="isLoading">
 </mat-spinner>
 <div *ngIf="!isLoading">
@@ -16,13 +15,15 @@
             <div class="col-md-6">
               Date :
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="scheduleDate"
+                <input [ngClass]="{'satText':mainForm.value.scheduleDay==6}" matInput [matDatepicker]="picker"
+                  placeholder="Choose a date" formControlName="scheduleDate"
                   [disabled]="mainForm.value.scheduleDate?true:false">
                 <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                <textarea [ngClass]="{'satText':mainForm.value.scheduleDay==6}" matInput placeholder="Description"
+                  formControlName="description"></textarea>
               </mat-form-field>
             </div>
             <div class="col-md-6 text-right" *ngIf="authservice.getRole()=='admin'">
@@ -40,11 +41,12 @@
               <th scope="col" formArrayName="locations"
                 *ngFor="let item of mainForm.get('locations')['controls']; let x=index">
                 <div [formGroupName]="x">
-                  <app-ump-dropdown [disable]="true" formControlName="location" *ngIf="isDisable && locations$"
-                    [ddModel]="locations$" [selected]="0">
+                  <app-ump-dropdown [isSat]="mainForm.value.scheduleDay" [disable]="true" formControlName="location"
+                    *ngIf="isDisable && locations$" [ddModel]="locations$" [selected]="0">
                   </app-ump-dropdown>
-                  <app-ump-dropdown [disable]="mainForm.value.locations[x].location > 0?true:false"
-                    formControlName="location" *ngIf="locations$" [ddModel]="!isDisable && locations$" [selected]="0">
+                  <app-ump-dropdown [isSat]="mainForm.value.scheduleDay"
+                    [disable]="mainForm.value.locations[x].location > 0?true:false" formControlName="location"
+                    *ngIf="locations$" [ddModel]="!isDisable && locations$" [selected]="0">
                   </app-ump-dropdown>
                   <a [routerLink]="['/location-map',mainForm.value.locations[x].location]"> <i
                       class="fas fa-map-marker-alt"></i></a>
@@ -57,23 +59,26 @@
             *ngFor="let item of mainForm.get('scheduleTime')['controls']; let x=index">
             <tr [formGroupName]="x">
               <td>
-                <app-ump-dropdown [disable]="true" formControlName="schTime" *ngIf="isDisable && timeArray$"
-                  [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
+                <app-ump-dropdown [disable]="true" [isSat]="mainForm.value.scheduleDay" formControlName="schTime"
+                  *ngIf="isDisable && timeArray$" [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
                 <app-ump-dropdown [disable]="item.value.schTime?true:false" formControlName="schTime"
                   *ngIf=" !isDisable && timeArray$" [ddModel]="timeArray$" [selected]="'8:00 AM'"></app-ump-dropdown>
               </td>
-              <td formArrayName="lu" contenteditable="true" [style.background]="header.value.IsRainedOut == true?'skyblue':''"
+              <td formArrayName="lu" contenteditable="true" [ngClass]="{'rained':header.value.IsRainedOut === true,
+                                                                        'deny': header.value.umpireStatus === 2}"
                 *ngFor="let header of  item.get('lu').controls ; let j=index;">
                 <div [formGroupName]="j">
-                  <app-ump-dropdown [disable]="true" formControlName="umpire" *ngIf="isDisable && umpires$"
-                    [ddModel]="umpires$" [selected]="0"
+                  <app-ump-dropdown [isSat]="mainForm.value.scheduleDay" [disable]="true" formControlName="umpire"
+                    *ngIf="isDisable && umpires$" [ddModel]="umpires$" [selected]="0"
                     (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate,mainForm.value.description, mainForm.value.locations[j].location)">
                   </app-ump-dropdown>
-                  <app-ump-dropdown [disable]="false" formControlName="umpire" *ngIf="!isDisable && umpires$"
-                    [ddModel]="umpires$" [selected]="0"
+                  <app-ump-dropdown [isSat]="mainForm.value.scheduleDay" [disable]="false" formControlName="umpire"
+                    *ngIf="!isDisable && umpires$" [ddModel]="umpires$" [selected]="0"
                     (selectOption)="selectedUmpire(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate,mainForm.value.description, mainForm.value.locations[j].location)">
                   </app-ump-dropdown>
-                  <a (click)="rainedOut(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate,mainForm.value.description, mainForm.value.locations[j].location)"><i class="fas fa-tint" style="color:skyblue;"></i></a>
+                  <a
+                    (click)="rainedOut(item.value.schTime,header.value.umpire, mainForm.value.scheduleDate,mainForm.value.description, mainForm.value.locations[j].location)"><i
+                      class="fas fa-tint" style="color:skyblue;"></i></a>
                 </div>
               </td>
             </tr>
@@ -103,11 +108,14 @@
                 class="fas fa-map-marker-alt"></i></a></td>
           <td>{{sch.UmpireFirstName}}</td>
           <td>
-          <mat-radio-group aria-label="Select an option" (change)="changeStatus(sch , $event)">
-            <mat-radio-button value="1">Confirm</mat-radio-button>
-            <mat-radio-button value="2">Deny</mat-radio-button>
-          </mat-radio-group>
-        </td>
+            <p *ngIf="sch.UmpireStatus ==1">Confirmed</p>
+            <p *ngIf="sch.UmpireStatus ==2">Confirmed</p>
+            <mat-radio-group *ngIf="sch.UmpireStatus == 0" aria-label="Select an option" [(ngModel)]="sch.UmpireStatus"
+              (change)="changeStatus(sch , $event)">
+              <mat-radio-button value="1">Confirm</mat-radio-button>
+              <mat-radio-button value="2">Deny</mat-radio-button>
+            </mat-radio-group>
+          </td>
         </tr>
       </tbody>
     </table>
